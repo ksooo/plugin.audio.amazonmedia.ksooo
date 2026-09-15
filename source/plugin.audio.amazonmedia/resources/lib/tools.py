@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys, os, pickle, requests
+import sys, os, pickle
 import urllib.parse as urlparse
 import xbmc, xbmcgui, xbmcaddon, xbmcvfs, xbmcplugin
-from random import randint
 from resources.lib.access import AMaccess
 from resources.lib.singleton import Singleton
 from infotagger.listitem import ListItemInfoTag
@@ -12,6 +11,8 @@ from infotagger.listitem import ListItemInfoTag
 class AMtools( Singleton ):
     """ Allow the usage of dot notation for data inside the g dictionary, without explicit function call """
     G = {}
+    defaultUserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
+
     def __init__( self ):
         self.setVariables()
 
@@ -39,16 +40,7 @@ class AMtools( Singleton ):
         self.G['showimages']    = self.getSetting('showimages')
 
     def getUserAgent( self ):
-        setUA = self.getSetting('userAgent')
-        if setUA == '':
-            url = 'https://raw.githubusercontent.com/Kikobeats/top-user-agents/master/index.json'
-            resp = requests.get( url=url)
-            if resp.status_code == 200:
-                setUA = resp.json()[randint(0, len(resp.json()) - 1)]
-            else:
-                setUA = 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0'
-            self.setSetting( 'userAgent', setUA )
-        return setUA
+        return self.getSetting('userAgent') or self.defaultUserAgent
 
     @staticmethod
     def getInfo( oProp ):

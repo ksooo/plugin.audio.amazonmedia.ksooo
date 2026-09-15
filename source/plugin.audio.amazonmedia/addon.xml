@@ -2,7 +2,7 @@
 <addon id="plugin.audio.amazonmedia" name="Amazon Media" version="1.1.4" provider-name="spacy">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
-        <import addon="script.module.mechanize" version="0.4.3"/>
+        <import addon="script.module.mechanicalsoup" version="1.0.0"/>
         <import addon="script.module.beautifulsoup4" version="4.9.3"/>
         <import addon="script.module.requests" version="2.22.0"/>
         <import addon="script.module.inputstreamhelper" version="0.4.4" optional="true"/>

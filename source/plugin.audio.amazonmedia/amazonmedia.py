@@ -43,6 +43,8 @@ class AmazonMedia( AMtools ):
             self.credentials = self.load()
         except IOError: # no credentials available, start logon
             self.credentials = AMlogon().amazonLogon()
+            if not self.credentials:
+                return
 
         self._c = AMcall()
         self._i = AMitem()
