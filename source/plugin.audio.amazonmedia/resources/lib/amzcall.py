@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import math, random, requests, json, datetime
-from urllib.parse import quote as urlquote
 from resources.lib.tools import AMtools
 from resources.lib.api import AMapi
 
@@ -668,6 +667,6 @@ class AMcall( AMtools ):
                 data['licenseChallenge'] = mediatype
             else:
                 data['licenseChallenge'] = 'b{SSM}'
-            #data = json.dumps(data)
-            data = urlquote(json.dumps(data))
+            # '|' separates the fields of the inputstream.adaptive license key, the access token contains one
+            data = json.dumps(data).replace('|', '\\u007c')
         return data
