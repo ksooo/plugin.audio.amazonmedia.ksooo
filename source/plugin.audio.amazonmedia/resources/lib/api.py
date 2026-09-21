@@ -48,14 +48,6 @@ class AMapi():
                     'target': 'com.amazon.musicplayqueueservice.model.client.external.voiceenabled.MusicPlayQueueServiceExternalVoiceEnabledClient.getNextTracks'
             }
         # get streaming url
-        elif amapi == 'APIstream': # ASIN / COID
-            s = {   'path':   'dmls/',
-                    'target': 'com.amazon.digitalmusiclocator.DigitalMusicLocatorServiceExternal.getRestrictedStreamingURL'
-            }
-        elif amapi == 'APIstreamHLS': # ASIN (hlsVersion:V3)
-            s = {   'path':   'dmls/',
-                    'target': 'com.amazon.digitalmusiclocator.DigitalMusicLocatorServiceExternal.getHLSManifest'
-            }
         elif amapi == 'APIstreamDash': # ASIN (musicDashVersionList: ["V1", "V2"])
             s = {   'path':   'dmls/',
                     'target': 'com.amazon.digitalmusiclocator.DigitalMusicLocatorServiceExternal.getDashManifestsV2'

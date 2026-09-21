@@ -73,7 +73,7 @@ class AMcall( AMtools ):
             self.log('reason: ' + resp.reason + ', code: ' + str(resp.status_code))
             self.log(resp.text)
 
-        if mode == 'getTrack' or mode == 'getTrackHLS' or mode == 'getTrackDash':
+        if mode == 'getTrackDash':
             return resp
         else:
             return resp.json()
@@ -579,43 +579,6 @@ class AMcall( AMtools ):
                 'customerId':       self.credentials.CUSTOMERID,
                 'deviceId':         self.credentials.DEVICEID,
                 'deviceType':       self.credentials.DEVICETYPE
-            }
-            data = json.dumps(data)
-
-        elif mode == 'getTrack':
-            data = {
-                'customerId' : self.credentials.CUSTOMERID,
-                'deviceToken' : {
-                    'deviceTypeId': self.credentials.DEVICETYPE,
-                    'deviceId' :    self.credentials.DEVICEID
-                },
-                'bitRate' : 'HIGH',
-                'appMetadata' : { 'https' : 'true' },
-                'clientMetadata' : { 'clientId' : 'WebCP' },
-                'contentId' : {
-                    'identifier' : asin,
-                    'identifierType' : mediatype #, # 'ASIN',
-                    #'bitRate' : 'HIGH'
-                }
-            }
-            data = json.dumps(data)
-
-        elif mode == 'getTrackHLS':
-            data = {
-                'customerId' : self.credentials.CUSTOMERID,
-                'deviceToken' : {
-                    'deviceTypeId': self.credentials.DEVICETYPE,
-                    'deviceId' :    self.credentials.DEVICEID
-                },
-                'bitRate' : 'HIGH',
-                'appMetadata' : { 'https' : 'true' },
-                'clientMetadata' : { 'clientId' : 'WebCP' },
-                'contentId' : {
-                    'identifier' : asin,
-                    'identifierType' : mediatype #, # 'ASIN',
-                },
-                'bitRateList' : [ 'HIGH' ],
-                'hlsVersion': 'V3'
             }
             data = json.dumps(data)
 

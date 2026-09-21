@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from urllib.parse import quote as urlquote
-import json, re, os, base64
+import json, os, base64
 import xbmc, xbmcgui, xbmcplugin, xbmcvfs
 
 from resources.lib.api import AMapi
@@ -23,74 +23,34 @@ class AMplay( AMtools ):
         self.credentials = self.load()
         self._a = AMapi()
         self._c = AMcall()
-        song    = self.tryGetStream( asin, objectId )
-        stream  = {'ia':False, 'lic':False}
-        if song == None:
-            manifest = self.tryGetStreamHLS( asin )
-            if manifest:
-                song = self.writeSongFile( manifest, 'm3u8' )
-        if song == None:
-            manifest = self.tryGetStreamDash( asin )
-            if manifest:
-                song = self.writeSongFile( manifest, 'mpd' )
-                song = 'http://{}/mpd/{}'.format( self.getSetting('proxy'), 'song.mpd' )
-                stream['ia']  = True
-                stream['lic'] = True
-        if song == None:
+        manifest = self.tryGetStreamDash( asin or objectId, 'ASIN' if asin else 'COID' )
+        if not manifest:
             xbmc.PlayList(0).clear()
             xbmc.Player().stop()
             xbmc.executebuiltin('Notification("Information:", %s %s %s, 10000, )'%(self.getTranslation(30073),' ',self.getTranslation(30074)))
             return False
-        self.finalizeItem( song, stream['ia'], stream['lic'] )
+        self.writeSongFile( manifest, 'mpd' )
+        song = 'http://{}/mpd/{}'.format( self.getSetting('proxy'), 'song.mpd' )
+        self.finalizeItem( song, True, True )
 
-    def tryGetStream( self, asin, objectId ):
+    def tryGetStreamDash( self, identifier, identifierType ):
         """
-        Try to get manifest data from the default endpoint
-        :param str asin:        unique song ID
-        :param str objectId:    2nd unique song ID
+        Get the DASH manifest of the song
+        :param str identifier:      unique song ID
+        :param str identifierType:  type of the given ID, 'ASIN' or 'COID'
         """
-        if objectId == None:
-            resp = self._c.amzCall( 'APIstream', 'getTrack', None, asin, 'ASIN' )
-            obj = json.loads(resp.text)
-            if 'statusCode' in obj and obj['statusCode'] == 'MAX_CONCURRENCY_REACHED':
+        resp = self._c.amzCall( 'APIstreamDash', 'getTrackDash', None, identifier, identifierType )
+        content = ( json.loads(resp.text).get('contentResponseList') or [{}] )[0]
+        status = content.get('contentResponseStatusCode')
+        if status != 'SUCCESS':
+            self.log('No manifest for {}: {} {}'.format(
+                identifier, status, content.get('contentResponseStatusMessage')))
+            if status == 'MAX_CONCURRENCY_REACHED':
                 xbmc.PlayList(0).clear()
                 xbmc.Player().stop()
                 xbmc.executebuiltin('Notification("Information:", %s %s %s, 10000, )'%(self.getTranslation(30073),' ',self.getTranslation(30075)))
-                return None
-            try:
-                song = obj['contentResponse']['urlList'][0]
-            except:
-                return None
-        else:
-            resp = self._c.amzCall( 'APIstream', 'getTrack', None, objectId, 'COID' )
-            obj = json.loads(resp.text)
-            # self.log(obj)
-            try:
-                if 'statusCode' in obj and obj['contentResponse']['statusCode'] == 'CONTENT_NOT_ELIGIBLE' or obj['contentResponse']['statusCode'] == 'BAD_REQUEST':
-                    return None
-            except:
-                return None
-            try:
-                song = obj['contentResponse']['urlList'][0]
-            except:
-                return None
-        return song
-
-    def tryGetStreamHLS( self, asin ):
-        """
-        Try to get manifest data from the HLS endpoint
-        :param str asin:        unique song ID
-        """
-        resp = self._c.amzCall( 'APIstreamHLS', 'getTrackHLS', None, asin, 'ASIN' )
-        return re.compile('manifest":"(.+?)"',re.DOTALL).findall(resp.text)
-
-    def tryGetStreamDash(self,asin):
-        """
-        Try to get manifest data from the DASH endpoint
-        :param str asin:        unique song ID
-        """
-        resp = self._c.amzCall( 'APIstreamDash', 'getTrackDash', None, asin, 'ASIN' )
-        return json.loads(resp.text)['contentResponseList'][0]['manifest']
+            return None
+        return content.get('manifest')
 
     def finalizeItem( self, song, ia=False, lic=False ):
         """
