@@ -136,12 +136,11 @@ class AMcall( AMtools ):
                         ]
                     }],
                     prop : val,
+                    # No eligibility restriction: Amazon answers a search that asks for the
+                    # PRIME tier with an empty result, whatever is searched for.
                     'contentRestrictions': {
                         'allowedParentalControls': {
                             'hasExplicitLanguage': 'true'
-                        },
-                        'eligibility': {
-                            'tier': self.credentials.ACCESSTYPE
                         }
                     }
                 }]
