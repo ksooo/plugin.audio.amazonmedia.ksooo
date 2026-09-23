@@ -148,12 +148,9 @@ class AMcall( AMtools ):
             data = json.JSONEncoder().encode(data)
 
         elif mode == 'getArtistDetails':
-            if self.credentials.ACCESSTYPE == 'UNLIMITED':
-                tier = 'MUSIC_SUBSCRIPTION'
-            else:
-                tier = self.credentials.ACCESSTYPE
             data  = {
-                'requestedContent': tier,
+                # Asking for the PRIME tier returns an empty album list for every artist.
+                'requestedContent': 'MUSIC_SUBSCRIPTION',
                 'asin': asin,
                 'types':[{
                     'sortBy':'popularity-rank',
@@ -300,7 +297,7 @@ class AMcall( AMtools ):
         elif mode == 'playlist':
             data  = {
                 'rankType':         mediatype,
-                'requestedContent': 'PRIME',#self.credentials.ACCESSTYPE,
+                'requestedContent': 'MUSIC_SUBSCRIPTION',
                 'features':         ['playlistLibraryAvailability','collectionLibraryAvailability'],
                 'types':            ['playlist'],
                 'nextTokenMap':     {'playlist' : token[0]},
@@ -494,7 +491,7 @@ class AMcall( AMtools ):
 
         elif mode == 'getStations':
             data = {
-                'requestedContent': 'PRIME', #self.credentials.ACCESSTYPE,
+                'requestedContent': 'MUSIC_SUBSCRIPTION',
                 'lang':             self.credentials.LOCALE,
                 'deviceId':         self.credentials.DEVICEID,
                 'deviceType':       self.credentials.DEVICETYPE,
