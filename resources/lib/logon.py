@@ -314,7 +314,9 @@ class AMlogon( AMtools ):
                     xbmc.sleep(100)
                 self._open(page_url)
                 if not self._selectForm('form#pollingForm'):
-                    return False
+                    # Nothing left to poll with: the approval went through and Amazon
+                    # has moved the sign-in on.
+                    return True
                 self._getLogonResponse()
                 status = self._parseHTML(self._content).find('input', attrs={'name': 'transactionApprovalStatus'})
                 status = status['value'] if status else ''
