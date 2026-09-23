@@ -21,11 +21,6 @@ class AMapi():
             s = {   'path':   'muse/legacy/lookup',
                     'target': 'com.amazon.musicensembleservice.MusicEnsembleService.lookup'
             }
-        elif amapi == 'APIgetStationSections':
-            s = {   'path':   'muse/stations/getStationSections',
-                    'target': 'com.amazon.musicensembleservice.MusicEnsembleService.getStationSectionsGet',
-                    'method': 'GET'
-            }
         elif amapi == 'APIartistDetailsMetadata':
             s = {   'path':   'muse/artistDetailsMetadata',
                     'target': 'com.amazon.musicensembleservice.MusicEnsembleService.artistDetailsMetadata'
@@ -37,15 +32,6 @@ class AMapi():
         elif amapi == 'APIgetHome':
             s = {   'path':   'muse/getHome',
                     'target': 'com.amazon.musicensembleservice.MusicEnsembleService.getHome'
-            }
-
-        elif amapi == 'APIcreateQueue': # genres
-            s = {   'path':   'mpqs/voiceenabled/createQueue',
-                    'target': 'com.amazon.musicplayqueueservice.model.client.external.voiceenabled.MusicPlayQueueServiceExternalVoiceEnabledClient.createQueue'
-            }
-        elif amapi == 'APIQueueGetNextTracks': # genres
-            s = {   'path':   'mpqs/voiceenabled/getNextTracks',
-                    'target': 'com.amazon.musicplayqueueservice.model.client.external.voiceenabled.MusicPlayQueueServiceExternalVoiceEnabledClient.getNextTracks'
             }
         # get streaming url
         elif amapi == 'APIstreamDash': # ASIN (musicDashVersionList: ["V1", "V2"])

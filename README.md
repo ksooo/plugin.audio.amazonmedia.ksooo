@@ -12,7 +12,7 @@ Install my [repo](https://github.com/spacys/repoverview) to receive automaticall
 I want an easy-to-use way to listen Amazon Music through Kodi. That is why I created this addon for private use only.
 
 ## Features
-This addon provides an easy access to the Amazon Music world with your own Amazon account. It is possible to search for Playlists, Albums, Songs, Station and Artists; to see the Amazon recommendations, the popular Playlists/Albums and the purchased Albums/Songs.
+This addon provides an easy access to the Amazon Music world with your own Amazon account. It is possible to search for Playlists, Albums, Songs and Artists; to see the Amazon recommendations, the popular Playlists/Albums and the purchased Albums/Songs.
 
 To play the songs it is necessary to install as well InputStream Adaptive.
 

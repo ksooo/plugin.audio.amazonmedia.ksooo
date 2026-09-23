@@ -22,10 +22,6 @@ msgctxt "#30004"
 msgid "Album Recommendations"
 msgstr "Album Consigliati"
 
-msgctxt "#30005"
-msgid "Station Recommendations"
-msgstr "Stazioni Consigliate"
-
 msgctxt "#30006"
 msgid "Songs - Owned"
 msgstr "Canzoni - di proprietà"
@@ -33,10 +29,6 @@ msgstr "Canzoni - di proprietà"
 msgctxt "#30007"
 msgid "Albums - Owned"
 msgstr "Albums - di proprietà"
-
-msgctxt "#30008"
-msgid "Stations"
-msgstr "Stazioni"
 
 msgctxt "#30009"
 msgid "Songs - Purchased"
@@ -61,14 +53,6 @@ msgstr "Playlists - Ricerca"
 msgctxt "#30014"
 msgid "Artist - Search"
 msgstr "Artista - Ricerca"
-
-msgctxt "#30015"
-msgid "Genres"
-msgstr "Generi"
-
-msgctxt "#30016"
-msgid "Stations - Search"
-msgstr "Stazioni - Ricerca"
 
 msgctxt "#30017"
 msgid "Songs - Recently Played"
@@ -101,14 +85,6 @@ msgstr "Playlists"
 msgctxt "#30024"
 msgid "Albums"
 msgstr "Albums"
-
-msgctxt "#30025"
-msgid "Stations - all Artists"
-msgstr "Stazioni - tutti gli Artisti"
-
-msgctxt "#30026"
-msgid "All Stations"
-msgstr "Tutte le Stazioni"
 
 msgctxt "#30027"
 msgid "Artists"

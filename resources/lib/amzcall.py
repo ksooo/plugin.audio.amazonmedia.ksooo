@@ -83,7 +83,7 @@ class AMcall( AMtools ):
         :param str amzUrl:  Endpoint ID
         :param str mode:    Request Addon Data ID
         :param str referer: no longer in use
-        :param str asin:    Playlist-, Albums-, Song-, Artist-, Station-ID
+        :param str asin:    Playlist-, Albums-, Song-, Artist-ID
         :param str/array mediatype: content depends on the caller function
         """
         self.credentials = self.load()
@@ -123,7 +123,7 @@ class AMcall( AMtools ):
         types:              artist, track, album, similarArtist, playlist, station
 
         :param str mode:            Request Addon Data ID
-        :param str asin:            Playlist-, Albums-, Song-, Artist-, Station-ID
+        :param str asin:            Playlist-, Albums-, Song-, Artist-ID
         :param str/array mediatype: content depends on the caller function
         """
         #data = json.dumps(data)
@@ -407,58 +407,6 @@ class AMcall( AMtools ):
                 ],
                 'albumName'
             )
-
-        elif mode == 'getStations':
-            data = {
-                'requestedContent': 'MUSIC_SUBSCRIPTION',
-                'lang':             self.credentials.LOCALE,
-                'deviceId':         self.credentials.DEVICEID,
-                'deviceType':       self.credentials.DEVICETYPE,
-                'musicTerritory':   self.credentials.MUSICTERRITORY,
-                'customerId':       self.credentials.CUSTOMERID
-            }
-            data = json.dumps(data)
-
-        elif mode == 'createQueue':
-            data = {
-                'identifier': asin,
-                'identifierType':'STATION_KEY',
-                'customerInfo': {
-                    'deviceId':     self.credentials.DEVICEID,
-                    'deviceType':   self.credentials.DEVICETYPE,
-                    'musicTerritory':self.credentials.MUSICTERRITORY,
-                    'customerId':   self.credentials.CUSTOMERID
-                },
-                'allowedParentalControls':{}
-            }
-            data = json.dumps(data)
-
-        elif mode == 'getNextTracks':
-            data = {
-                'pageToken' : mediatype,
-                'numberOfTracks':10,
-                'customerInfo': {
-                    'deviceId':     self.credentials.DEVICEID,
-                    'deviceType':   self.credentials.DEVICETYPE,
-                    'musicTerritory':self.credentials.MUSICTERRITORY,
-                    'customerId':   self.credentials.CUSTOMERID
-                },
-                'allowedParentalControls':{}
-            }
-            data = json.dumps(data)
-
-        elif mode == 'getGenrePlaylist':
-            data = {
-                'identifier': asin,
-                'identifierType': 'STATION_KEY',
-                'customerInfo': {
-                    'deviceId':     self.credentials.DEVICEID,
-                    'deviceType':   self.credentials.DEVICETYPE,
-                    'musicTerritory':self.credentials.MUSICTERRITORY,
-                    'customerId':   self.credentials.CUSTOMERID
-                },
-                'allowedParentalControls': {}
-            }
 
         elif mode == 'getTrackDash':
             mID = self.getMaestroID()

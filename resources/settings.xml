@@ -21,9 +21,6 @@
         <setting id="search1Songs"      type="text" visible="false" label="search1Songs"     default=""/>
         <setting id="search2Songs"      type="text" visible="false" label="search2Songs"     default=""/>
         <setting id="search3Songs"      type="text" visible="false" label="search3Songs"     default=""/>
-        <setting id="search1Stations"   type="text" visible="false" label="search1Stations"  default=""/>
-        <setting id="search2Stations"   type="text" visible="false" label="search2Stations"  default=""/>
-        <setting id="search3Stations"   type="text" visible="false" label="search3Stations"  default=""/>
         <setting id="search1Artists"    type="text" visible="false" label="search1Artists"   default=""/>
         <setting id="search2Artists"    type="text" visible="false" label="search2Artists"   default=""/>
         <setting id="search3Artists"    type="text" visible="false" label="search3Artists"   default=""/>

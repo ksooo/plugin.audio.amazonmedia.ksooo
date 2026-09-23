@@ -86,7 +86,6 @@ class AMitem( AMtools ):
 
         if 'albumName' in item:             info['album'] = item['albumName']
         if 'description' in item:           info['album'] = item['description']
-        if 'stationTitle' in item:          info['album'] = item['stationTitle']
         if 'album' in item:
             try:
                 info['album'] = item['album']['name']
@@ -100,7 +99,6 @@ class AMitem( AMtools ):
             if 'artist' in item:                info['artist'] = item['artist']['name']
             if 'artistName' in item:            info['artist'] = item['artistName']
 
-        if 'stationTitle' in item:          info['title'] = item['stationTitle']
         if 'displayName' in item:           info['title'] = item['displayName']
 
         if 'isAlbum' in filter and filter['isAlbum']:
@@ -122,7 +120,6 @@ class AMitem( AMtools ):
         if 'asin' in item:                  meta['asin'] = item['asin']
         if 'seedId' in item:                meta['asin'] = item['seedId']
         if 'categoryId' in item:            meta['asin'] = item['categoryId']
-        if 'stationKey' in item:            meta['asin'] = item['stationKey']
         if 'identifier' in item:            meta['asin'] = item['identifier']
         if 'isAlbum' in filter and filter['isAlbum']:
             if 'albumAsin' in item:
@@ -130,15 +127,12 @@ class AMitem( AMtools ):
 
         if 'trackId' in item:               meta['objectId'] = item['trackId']
         if 'objectId' in item:              meta['objectId'] = item['objectId']
-        if 'stationSeedId' in item:         meta['objectId'] = item['stationSeedId']
 
         # images - 'icon','thumb','fanart','poster','banner','landscape'
         if 'image' in item:                 meta['thumb'] = item['image']
         if 'imageFull' in item:             meta['thumb'] = item['imageFull']
         if 'albumCoverImageFull' in item:   meta['thumb'] = item['albumCoverImageFull']
         if 'albumArtImageUrl' in item:      meta['thumb'] = item['albumArtImageUrl']
-        if 'stationImageUrl' in item and item['stationImageUrl'] is not None:
-            meta['thumb'] = item['stationImageUrl']
         if 'foregroundImageUrl' in item and item['foregroundImageUrl'] is not None:
             meta['thumb'] = item['foregroundImageUrl']
         if 'artOriginal' in item:           meta['thumb'] = item['artOriginal']['URL']
@@ -157,8 +151,7 @@ class AMitem( AMtools ):
         if (('isPrime' in item and (item['isPrime'] == True or item['isPrime'] == 'true')) or
             ('primeStatus' in item and item['primeStatus'] == 'PRIME') or
             ('serviceTier' in item and item['serviceTier'] == 'PRIME') or
-            ('playlistId' in item) or
-            ('isStation' in filter and filter['isStation'] == True)):
+            ('playlistId' in item)):
             meta['isPrime'] = True
 
         if ('isMusicSubscription' in item and (item['isMusicSubscription'] == True or item['isMusicSubscription'] == 'true')):
@@ -171,7 +164,7 @@ class AMitem( AMtools ):
         if self.G['showcolentr']:
             if meta['purchased']:
                 meta['color'] = '[COLOR gold]%s[/COLOR]'
-            elif meta['isPlayable'] or 'stationMapIds' in item:
+            elif meta['isPlayable']:
                 meta['color'] = '%s'
             else:
                 meta['color'] = '[COLOR red]%s[/COLOR]'
@@ -258,7 +251,7 @@ class AMitem( AMtools ):
         Provides a Kodi List Item as paginator, returns item tupel
         :param str nextToken:   page token
         :param str query:       request query
-        :param str asin:        Album-, Artist-, Station-, Playlist-ID
+        :param str asin:        Album-, Artist-, Playlist-ID
         """
         li = xbmcgui.ListItem(label=self.getTranslation(30020))
         li.setProperty('IsPlayable', 'false')

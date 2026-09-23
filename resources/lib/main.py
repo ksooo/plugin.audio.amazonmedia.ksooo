@@ -54,7 +54,6 @@ class AmazonMedia( AMtools ):
         self.sPlayLists     = ['search1PlayLists',  'search2PlayLists', 'search3PlayLists']
         self.sAlbums        = ['search1Albums',     'search2Albums',    'search3Albums']
         self.sSongs         = ['search1Songs',      'search2Songs',     'search3Songs']
-        self.sStations      = ['search1Stations',   'search2Stations',  'search3Stations']
         self.sArtists       = ['search1Artists',    'search2Artists',   'search3Artists']
 
         # build kodi menus
@@ -62,7 +61,6 @@ class AmazonMedia( AMtools ):
         elif mode == 'menuPlaylists':   self.createList( AMmenu.menuPlaylists(),True )
         elif mode == 'menuAlbums':      self.createList( AMmenu.menuAlbums(),True )
         elif mode == 'menuSongs':       self.createList( AMmenu.menuSongs(),True )
-        elif mode == 'menuStations':    self.createList( AMmenu.menuStations(),True )
         elif mode == 'menuArtists':     self.createList( AMmenu.menuArtists(),True )
 
         try:
@@ -85,11 +83,6 @@ class AmazonMedia( AMtools ):
             elif mode == 'searchArtist':    self.searchItems(['artists','catalog_artist'],30014)
             elif mode in ['search1Artists','search2Artists','search3Artists']:
                 exec('self.searchItems([\'artists\',\'catalog_artist\'],None,self.getSetting("{}"))'.format(mode))
-
-            # search stations
-            elif mode == 'searchStations':  self.searchItems(['stations','catalog_station'],30016)
-            elif mode in ['search1Stations','search2Stations','search3Stations']:
-                exec('self.searchItems([\'stations\',\'catalog_station\'],None,self.getSetting("{}"))'.format(mode))
 
             elif mode == 'getArtistDetails':
                 asin = self.G['addonArgs'].get('asin', [None])
@@ -127,7 +120,6 @@ class AmazonMedia( AMtools ):
             # recommendations
             elif mode == 'getRecomPlayLists':   self.getRecommendations('mp3-prime-browse-carousels_playlistStrategy')
             elif mode == 'getRecomAlbums':      self.getRecommendations('mp3-prime-browse-carousels_mp3PrimeAlbumsStrategy')
-            elif mode == 'getRecomStations':    self.getRecommendations('mp3-prime-browse-carousels_mp3ArtistStationStrategy')
 
             elif mode == 'getNewRecom':         self.getNewRecommendations()
             elif mode == 'getNewRecomDetails':
@@ -139,15 +131,6 @@ class AmazonMedia( AMtools ):
                 self.getPurchased('albums')
             elif mode in ['getPurSongs','getAllSongs']:
                 self.getPurchased('songs')
-
-            # get amazon stations
-            elif mode in ['getStations','getAllArtistsStations','getGenres','getGenres2']:
-                items = self._c.amzCall('APIgetStationSections','getStations','/stations')
-                self.setAddonContent(mode.replace('get','').lower(),items,'albums')
-
-            elif mode in ['getGenrePlaylist','createQueue']:
-                asin = self.G['addonArgs'].get('asin', None)
-                exec('self.{}(asin[0])'.format(mode))
 
             # get song lists
             elif mode == 'lookup':
@@ -201,17 +184,9 @@ class AmazonMedia( AMtools ):
         # data structure is similar to lookup
         self.setAddonContent( 'playlists', items, 'albums' )
 
-    def getGenrePlaylist( self, asin ):
-        """
-        Collect Genre information
-        :param str asin:    Station-ID
-        """
-        items = self._c.amzCall( 'APIcreateQueue', 'getGenrePlaylist', None, asin )
-        self.setAddonContent( 'genreplaylist', items, 'albums' )
-
     def getRecommendations( self, mediatype ):
         """
-        Collect recommendations for Playlists, Album, Stations
+        Collect recommendations for Playlists and Albums
         :param str mediatype:   historical API entry point
         """
         resp = self._c.amzCall( 'APIgetBrowseRecommendations', 'recommendations', None, None, mediatype )
@@ -220,8 +195,6 @@ class AmazonMedia( AMtools ):
             sel = 'recplaylists'
         elif resp['recommendations'][0]['recommendationType'] == 'ALBUM':
             sel = 'recalbums'
-        elif resp['recommendations'][0]['recommendationType'] == 'STATION':
-            sel = 'recstations'
         self.setAddonContent( sel, resp['recommendations'][0], 'albums' )
 
     def getNewRecommendations( self ):
@@ -274,7 +247,7 @@ class AmazonMedia( AMtools ):
 
     def searchItems( self, mode=None, txt=None, query=None ):
         """
-        Search function for Playlists, Albums, Songs, Stations and Artists
+        Search function for Playlists, Albums, Songs and Artists
         :param array mode:  search mode
         :param str txt:     dialog description
         :param str query:   search string
@@ -309,11 +282,6 @@ class AmazonMedia( AMtools ):
                 self.setSearch( self.sArtists, query )
             self.setAddonContent( 'searchartists', items, 'albums', None, query ) #songs
 
-        elif mode[0] == 'stations':
-            if not txt == None:
-                self.setSearch( self.sStations, query )
-            self.setAddonContent( 'searchstations', items, 'albums', None, query )
-
     def getArtistDetails( self, asin ):
         """
         Collect Artist details
@@ -322,25 +290,6 @@ class AmazonMedia( AMtools ):
         resp = self._c.amzCall( 'APIartistDetailsMetadata', 'getArtistDetails', None, asin, None )
         items = resp
         self.setAddonContent( 'artistdetails', items, 'albums', None, asin )
-
-    def createQueue( self, asin ):
-        """
-        Create playlist queue for given unique ID
-        :param str asin:    Unique ID
-        """
-        resp = self._c.amzCall( 'APIcreateQueue', 'createQueue', None, asin, None )
-        token = resp['queue']['pageToken']
-        tracklist = resp['trackMetadataList']
-        i = 1
-        while token: # 5 songs per loop
-            resp = self._c.amzCall( 'APIQueueGetNextTracks', 'getNextTracks', None, asin, token )
-            token = resp['nextPageToken']
-            for item in resp['trackMetadataList']:
-                tracklist.append(item)
-            if i == 10:
-                break
-            i += 1
-        self.setAddonContent( 'stationList', tracklist, 'songs' )
 
     # kodi visualization
     def getMeta( self, resp, filter ):
@@ -424,20 +373,6 @@ class AmazonMedia( AMtools ):
                     continue
                 itemlist.append((url, li, False))
 
-        elif mode == 'stationList':             # station playlist
-            for item in param:
-                meta.append(item['identifier'])
-            meta = self._c.amzCall('APIlookup','itemLookup',None,meta,mediatype)['trackList']
-            for item in param:
-                inf, met = self._i.setData(item,{'mode':'getTrack'})
-                for i in meta:
-                    if item['identifier'] == i['asin']:
-                        inf, met = self._i.setData(i,{'info':inf,'meta':met,'update':True})
-                    else:
-                        continue
-                url, li  = self._i.setItem(inf,met)
-                itemlist.append((url, li, False))
-
         elif mode == 'playlists':               # playlists
             for item in param['playlistList']:
                 sortArray.append(item)
@@ -509,18 +444,6 @@ class AmazonMedia( AMtools ):
             if page:
                 itemlist.append( listitem )
 
-        elif mode == 'recstations':             # recommended stations
-            for item in param['stations']:
-                sortArray.append(item)
-            sortArray.sort(key=lambda x: x['stationTitle'])
-            for i in sortArray:
-                itemlist.append(
-                    self._i.setListItem(i,{'mode':'createQueue'})
-                )
-            page, listitem = self._i.addPaginator(param['nextResultsToken'],param['stations'])
-            if page:
-                itemlist.append( listitem )
-
         elif mode == 'recentlyplayed':          # recently played songs
             for item in param['recentTrackList']:
                 inf, met = self._i.setData(item,{'mode':'getTrack'})
@@ -542,9 +465,7 @@ class AmazonMedia( AMtools ):
                     mod     = {'mode':'lookup'}
                     fold    = True
                 elif 'StationHint' in i:
-                    ctype   = 'albums'
-                    mod     = {'mode':'createQueue'}
-                    fold    = True
+                    continue
                 elif 'TrackHint' in i:
                     ctype   = 'songs'
                     mod    = {'mode':'getTrack'}
@@ -573,53 +494,6 @@ class AmazonMedia( AMtools ):
             page, listitem = self._i.addPaginator(param.get('nextToken'),param['resultList'])
             if page:
                 itemlist.append( listitem )
-
-        elif mode == 'stations':                # (all) stations
-            items = param['categories'].get('allStations')['stationMapIds']
-            for item in items:
-                sortArray.append(param['stations'].get(item))
-            sortArray.sort(key=lambda x: x['stationTitle'])
-            for i in sortArray:
-                itemlist.append(
-                    self._i.setListItem(i,{'mode':'createQueue'})
-                )
-
-        elif mode == 'allartistsstations':      # (all artists) stations
-            items = param['stations']
-            for item in items:
-                i = param['stations'].get(item)
-                if not i['seedType'] == 'ARTIST':
-                    continue
-                sortArray.append(i)
-            sortArray.sort(key=lambda x: x['stationTitle'])
-            for i in sortArray:
-                itemlist.append(
-                    self._i.setListItem(i,{'mode':'createQueue'})
-                )
-
-        elif mode == 'genres':                  # genre 1st level
-            for sec in param['sections']:
-                if sec['sectionId'] == 'genres':
-                    for item in sec['categoryMapIds']:
-                        sortArray.append(param['categories'].get(item))
-                else:
-                    continue
-            sortArray.sort(key=lambda x: x['title'])
-            for i in sortArray:
-                itemlist.append(
-                    self._i.setListItem(i,{'mode':'getGenres2','isStation':True})
-                )
-
-        elif mode == 'genres2':                 # genres 2nd level
-            asin = self.G['addonArgs'].get('asin', None)[0]
-            items = param['categories'].get(asin)['stationMapIds']
-            for item in items:
-                sortArray.append(param['stations'].get(item))
-            sortArray.sort(key=lambda x: x['stationTitle'])
-            for i in sortArray:
-                itemlist.append(
-                    self._i.setListItem(i,{'mode':'createQueue'})
-                )
 
         elif mode == 'purchasedalbums':         # purchased and owned albums
             for item in param['resultList']:
@@ -689,17 +563,6 @@ class AmazonMedia( AMtools ):
             for item in param['hits']:
                 itemlist.append(
                     self._i.setListItem(item['document'],{'mode':'getArtistDetails','isList':True})
-                )
-            try:
-                if not param['nextPage'] == None and len(param['hits']) <= self.G['maxResults']: # next page
-                    itemlist.append( self._i.setPaginator( param['nextPage'], query ) )
-            except:
-                pass
-
-        elif mode == 'searchstations':          # search stations
-            for item in param['hits']:
-                itemlist.append(
-                    self._i.setListItem(item['document'],{'mode':'createQueue', 'query':query} )
                 )
             try:
                 if not param['nextPage'] == None and len(param['hits']) <= self.G['maxResults']: # next page

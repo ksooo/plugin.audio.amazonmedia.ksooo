@@ -14,8 +14,6 @@ class AMmenu():
         return [{'txt':30023,'fct':'menuPlaylists',         'img':'playlists.jpg'},
                 {'txt':30024,'fct':'menuAlbums',            'img':'albums.jpg'},
                 {'txt':30022,'fct':'menuSongs',             'img':'songs.jpg'},
-                {'txt':30008,'fct':'menuStations',          'img':'stations.jpg'},
-                {'txt':30015,'fct':'getGenres',             'img':'genres.jpg'},
                 {'txt':30027,'fct':'menuArtists',           'img':'artists.jpg'},
                 {'txt':30041,'fct':'getNewRecom',           'img':'newrecom.jpg'}]
 
@@ -51,16 +49,6 @@ class AMmenu():
                 {'txt':30006,'fct':'getAllSongs',           'img':'songs.jpg'},
                 {'txt':30017,'fct':'getRecentlyPlayed',     'img':'songs.jpg'},
                 {'txt':30021,'fct':'getRecentlyAddedSongs', 'img':'songs.jpg'}]
-
-    @staticmethod
-    def menuStations():
-        return [{'txt':30016,'fct':'searchStations',        'img':'search.png'},
-                {'txt':30032,'fct':'search1Stations',       'img':'search.png','search':'search1Stations'},
-                {'txt':30033,'fct':'search2Stations',       'img':'search.png','search':'search2Stations'},
-                {'txt':30034,'fct':'search3Stations',       'img':'search.png','search':'search3Stations'},
-                {'txt':30005,'fct':'getRecomStations',      'img':'stations.jpg'},
-                {'txt':30026,'fct':'getStations',           'img':'stations.jpg'},
-                {'txt':30025,'fct':'getAllArtistsStations', 'img':'stations.jpg'}]
 
     @staticmethod
     def menuArtists():
