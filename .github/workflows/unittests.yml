@@ -1,0 +1,35 @@
+name: Unit tests
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  unittests:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # The oldest Kodi that can run this addon carries Python 3.8; the
+        # newest carries 3.14. Both have to stay happy.
+        python-version: ['3.8', '3.14']
+    name: Python ${{ matrix.python-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # In Kodi these come as script modules from the Kodi repository.
+      - name: Install dependencies
+        run: pip install beautifulsoup4 mechanicalsoup requests
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -t . -v
