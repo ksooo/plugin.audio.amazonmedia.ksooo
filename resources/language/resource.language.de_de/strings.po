@@ -148,19 +148,19 @@ msgstr "Addon erfolgreich initialisiert."
 
 msgctxt "#30072"
 msgid "Captcha required!"
-msgstr "Captcha required!"
+msgstr "Captcha erforderlich!"
 
 msgctxt "#30073"
 msgid "Playback not possible!"
-msgstr "Playback not possible!"
+msgstr "Wiedergabe nicht möglich!"
 
 msgctxt "#30074"
 msgid "Cannot find streaming URL."
-msgstr "Cannot find streaming URL."
+msgstr "Streaming-URL nicht gefunden."
 
 msgctxt "#30075"
 msgid "Another instance is running."
-msgstr "Another instance is running."
+msgstr "Eine andere Instanz läuft bereits."
 
 msgctxt "#30076"
 msgid "Credentials successful removed."
