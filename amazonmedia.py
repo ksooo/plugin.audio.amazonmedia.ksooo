@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
 from urllib.parse import quote as urlquote
-from urllib.parse import urlencode as urlencode
 
 import os
 import xbmc

@@ -545,43 +545,6 @@ class AMcall( AMtools ):
                 'allowedParentalControls': {}
             }
 
-        elif mode == 'getMetaData':
-            data = {
-                'trackIdList': asin,
-                'attributeList': [
-                    'albumCoverImageFull',
-                    'albumCoverImageLarge',
-                    'albumCoverImageMedium',
-                    'albumCoverImageSmall',
-                    'albumName',
-                    'albumAsin',
-                    'sortAlbumName',
-                    'artistName',
-                    'artistAsin',
-                    'sortArtistName',
-                    'sortAlbumArtistName',
-                    'objectId',
-                    'asin',
-                    'title',
-                    'status',
-                    'primeStatus',
-                    'isMusicSubscription',
-                    'assetType',
-                    'duration',
-                    'discNum',
-                    'trackNum',
-                    'instantImport',
-                    'purchased',
-                    'uploaded',
-                    'albumReleaseDate'
-                ],
-                'musicTerritory':   self.credentials.MUSICTERRITORY,
-                'customerId':       self.credentials.CUSTOMERID,
-                'deviceId':         self.credentials.DEVICEID,
-                'deviceType':       self.credentials.DEVICETYPE
-            }
-            data = json.dumps(data)
-
         elif mode == 'getTrackDash':
             mID = self.getMaestroID()
             data = {

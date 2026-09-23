@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
 import threading, sys
 import xbmc, xbmcaddon
 from resources.lib.proxy import ProxyTCPD

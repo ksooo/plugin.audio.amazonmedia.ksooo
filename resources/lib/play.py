@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from urllib.parse import quote as urlquote
-import json, os, base64
+import json, os
 import xbmc, xbmcgui, xbmcplugin, xbmcvfs
 
 from resources.lib.api import AMapi

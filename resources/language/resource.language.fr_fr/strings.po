@@ -134,30 +134,6 @@ msgctxt "#30034"
 msgid "Last Search -3 : "
 msgstr "Dernière recherche -3 : "
 
-msgctxt "#30035"
-msgid "Soccer Live"
-msgstr "Football Live"
-
-msgctxt "#30036"
-msgid "Bundesliga"
-msgstr "Bundesligue"
-
-msgctxt "#30037"
-msgid "2. Bundesliga"
-msgstr "2. Bundesligue"
-
-msgctxt "#30038"
-msgid "DFB Pokal"
-msgstr "DFB Pokal"
-
-msgctxt "#30039"
-msgid "Champions League"
-msgstr "Champions League"
-
-msgctxt "#30040"
-msgid "SuperCup"
-msgstr "SuperCup"
-
 msgctxt "#30041"
 msgid "Recommendations"
 msgstr "Recommendations"
@@ -198,10 +174,6 @@ msgctxt "#30101"
 msgid "Domain Identifier (DE / UK ...)"
 msgstr "Domaine d'identification (DE / UK ...)"
 
-msgctxt "#30102"
-msgid "Audio Quality"
-msgstr "Qualité Audio"
-
 msgctxt "#30103"
 msgid "Reset Addon"
 msgstr "Reset Addon"
@@ -222,18 +194,6 @@ msgctxt "#30107"
 msgid "Show unplayable Songs"
 msgstr "Voir les titres non jouables"
 
-msgctxt "#30108"
-msgid "Save Username?"
-msgstr "Enregistrer le nom d'utilisateur?"
-
-msgctxt "#30109"
-msgid "Save Password?"
-msgstr "Enregistrez le mot de passe?"
-
 msgctxt "#30110"
 msgid "Reset Credentials"
 msgstr "Reset Identifiants de l'utilisateur"
-
-msgctxt "#30200"
-msgid "User Credentials"
-msgstr "Identifiants de l'utilisateur"
