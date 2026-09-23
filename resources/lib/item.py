@@ -164,25 +164,18 @@ class AMitem( AMtools ):
         if ('isMusicSubscription' in item and (item['isMusicSubscription'] == True or item['isMusicSubscription'] == 'true')):
             meta['isUnlimited'] = True
 
+        # Amazon no longer flags catalog content as Prime and streams it to a Prime account
+        # just as it does to a subscription, so the account tier does not decide any more.
+        meta['isPlayable'] = bool(meta['purchased'] or meta['isPrime'] or meta['isUnlimited'])
+
         if self.G['showcolentr']:
             if meta['purchased']:
                 meta['color'] = '[COLOR gold]%s[/COLOR]'
-            elif meta['isPrime'] or 'stationMapIds' in item:
+            elif meta['isPlayable'] or 'stationMapIds' in item:
                 meta['color'] = '%s'
-            elif meta['isUnlimited']:
-                meta['color'] = '[COLOR blue]%s[/COLOR]'
             else:
                 meta['color'] = '[COLOR red]%s[/COLOR]'
 
-        if ((self.credentials.ACCESSTYPE == 'PRIME'     and not meta['isPrime'] and not meta['purchased']) or
-            (self.credentials.ACCESSTYPE == 'UNLIMITED' and not meta['isPrime'] and not meta['purchased'] and not meta['isUnlimited'] )):
-            meta['isPlayable'] = False
-        else:
-            meta['isPlayable'] = True
-
-        if (self.credentials.ACCESSTYPE == 'UNLIMITED' and meta['isUnlimited']):
-            meta['isPlayable'] = True
-        
         if 'isList' in filter and filter['isList'] and info['tracknumber'] is not None:
             info['title'] =  '{}  ({} Hits'.format(info['title'],info['tracknumber'])
             if info['duration'] is not None:
