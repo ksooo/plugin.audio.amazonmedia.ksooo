@@ -166,6 +166,10 @@ msgctxt "#30076"
 msgid "Credentials successful removed."
 msgstr "Benutzerdaten erfolgreich gelöscht."
 
+msgctxt "#30077"
+msgid "Request failed."
+msgstr "Anfrage fehlgeschlagen."
+
 msgctxt "#30100"
 msgid "General"
 msgstr "Allgemein"

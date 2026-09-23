@@ -166,6 +166,10 @@ msgctxt "#30076"
 msgid "Credentials successful removed."
 msgstr "Credentials successful removed."
 
+msgctxt "#30077"
+msgid "Request failed."
+msgstr "Request failed."
+
 msgctxt "#30100"
 msgid "General"
 msgstr "Generale"

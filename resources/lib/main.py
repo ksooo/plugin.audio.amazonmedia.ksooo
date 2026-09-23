@@ -4,7 +4,9 @@
 from urllib.parse import quote as urlquote
 
 import os
+import traceback
 import xbmc
+import xbmcplugin
 
 from resources.lib.item import AMitem
 from resources.lib.menu import AMmenu
@@ -159,9 +161,11 @@ class AmazonMedia( AMtools ):
                 from resources.lib.play import AMplay
                 AMplay().getTrack(asin,objectId)
  
-        except: # something went wrong, try to logon again
-            self.resetCredentials()
-            self.credentials = AMlogon().amazonLogon()
+        except Exception:
+            # The credentials stay: a failed request is no indication that they went stale.
+            self.log(traceback.format_exc(), xbmc.LOGERROR)
+            xbmc.executebuiltin('Notification("Information:", {}, 5000, )'.format(self.getTranslation(30077)))
+            xbmcplugin.endOfDirectory(self.G['addonHandle'], False)
 
     # get music information
     def lookup( self, asin ):
