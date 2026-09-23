@@ -32,11 +32,11 @@ class AmazonMedia( AMtools ):
         # reset and initilialize the addon
         if mode == 'resetAddon':
             self.resetAddon()
-            xbmc.executebuiltin('Notification("Information:", {}, 5000, )'.format(self.getTranslation(30071)))
+            xbmc.executebuiltin('Notification("Information", {}, 5000, )'.format(self.getTranslation(30071)))
             return
         elif mode == 'resetCredentials':
             self.resetCredentials()
-            xbmc.executebuiltin('Notification("Information:", {}, 5000, )'.format(self.getTranslation(30076)))
+            xbmc.executebuiltin('Notification("Information", {}, 5000, )'.format(self.getTranslation(30076)))
             return
 
         try:
@@ -163,7 +163,7 @@ class AmazonMedia( AMtools ):
         except Exception:
             # The credentials stay: a failed request is no indication that they went stale.
             self.log(traceback.format_exc(), xbmc.LOGERROR)
-            xbmc.executebuiltin('Notification("Information:", {}, 5000, )'.format(self.getTranslation(30077)))
+            xbmc.executebuiltin('Notification("Information", {}, 5000, )'.format(self.getTranslation(30077)))
             xbmcplugin.endOfDirectory(self.G['addonHandle'], False)
 
     # get music information
