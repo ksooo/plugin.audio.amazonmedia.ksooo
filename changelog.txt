@@ -1,3 +1,23 @@
+v2.0.0
+- Independent continuation of spacy's add-on, which is no longer developed. It has its own add-on id now, so you have to sign in once more.
+- Signing in works again. Amazon had changed its sign-in pages and its web player.
+- Playback works again.
+- Important: Playback needs Kodi for Android. On desktop Amazon refuses to hand out the DRM licence.
+- Removed: Stations, genres and the recently played songs. Amazon has withdrawn the services behind them.
+- New: The path to the folder you are in is shown top left, after the add-on name. Menu entries no longer repeat the name of their menu.
+- Fixed: Kodi could hang when you quit it after having played something.
+- Fixed: Search did not return any results.
+- Fixed: A failed request signed you out instead of just reporting the error.
+- Fixed: Signing in did not continue after the notification was approved on another device.
+- Fixed: The approval prompt did not say where the notification had been sent.
+- Fixed: Artist and playlist listings came back empty.
+- Fixed: With a Prime account nearly everything counted as unplayable and was left out of the listings.
+- Fixed: Your own library and the recently added songs failed with an error. Amazon had withdrawn the endpoint they used.
+- A title Amazon does not release for streaming, such as a purchase outside its catalogue, now says so instead of reporting a missing streaming URL.
+- Fixed: German notifications were partly English, had a colon after the title and a wide gap, and showed errors as information.
+- Translations revised: German uses the infinitive, "Wiedergabelisten" and "Titel", French and Italian are complete now and corrected.
+- Settings revised: unplayable songs are hidden by default, the setting for showing all images is gone, and every setting explains itself in a help text.
+
 1.1.4
 - Tags revised
 1.1.3

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings version="1">
-    <section id="plugin.audio.amazonmedia">
+    <section id="plugin.audio.amazonmedia.ksooo">
         <category id="general" label="30100">
             <group id="1">
                 <setting id="userTLD" type="integer" label="30101" help="30120">
@@ -40,14 +40,14 @@
             <group id="4">
                 <setting id="resetAddon" type="action" label="30103" help="30124">
                     <level>0</level>
-                    <data>RunPlugin(plugin://plugin.audio.amazonmedia/?mode=resetAddon)</data>
+                    <data>RunPlugin(plugin://plugin.audio.amazonmedia.ksooo/?mode=resetAddon)</data>
                     <control type="button" format="action">
                         <close>true</close>
                     </control>
                 </setting>
                 <setting id="resetCredentials" type="action" label="30110" help="30125">
                     <level>0</level>
-                    <data>RunPlugin(plugin://plugin.audio.amazonmedia/?mode=resetCredentials)</data>
+                    <data>RunPlugin(plugin://plugin.audio.amazonmedia.ksooo/?mode=resetCredentials)</data>
                     <control type="button" format="action">
                         <close>true</close>
                     </control>

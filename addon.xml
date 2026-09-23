@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.audio.amazonmedia"
+<addon id="plugin.audio.amazonmedia.ksooo"
        name="Amazon Media"
-       version="1.1.4"
-       provider-name="spacy">
+       version="2.0.0"
+       provider-name="spacy, Kai Sommerfeld">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.mechanicalsoup" version="1.0.0"/>
@@ -18,12 +18,21 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <license>GPL-2.0-or-later</license>
-    <source>https://github.com/spacys/</source>
-    <forum>https://www.kodinerds.net/index.php/Thread/65849-Amazon-Mediathek/?postID=524424</forum>
+    <source>https://github.com/ksooo/plugin.audio.amazonmedia.ksooo</source>
     <website>https://www.amazon.de</website>
     <summary lang="en_GB">Unofficial Amazon Music Add-on</summary>
     <description lang="en_GB">Unofficial Kodi Amazon Music Add-on - Kodi extention to browse and play Amazon Music songs. An Amazon account is necessary. Inputstream Adaptiv needs to be activated and the latest widevine verion installed.</description>
     <disclaimer lang="en_GB">Some parts of this addon may not be legal in your country of residence - please check with your local laws before installing. All used images are from Amazon.</disclaimer>
+    <news>v2.0.0
+- Continues spacy's add-on, which is no longer developed, under an own add-on id: you have to sign in once more.
+- Functionality of the old add-on restored (e.g. login works again).
+- Important: Playback needs Kodi for Android; on desktop Amazon refuses the DRM licence.
+- Removed: Stations, genres and the recently played songs. Amazon has withdrawn the services behind them.
+- New: The path to the current folder is shown top left.
+- New: A title Amazon does not stream says so, instead of reporting a missing URL.
+- Translations revised.
+- Several small bug fixes.
+</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>

@@ -1,15 +1,20 @@
-# THE DEVELOPMENT WAS STOPPED!
-I'll keep this repo for historical reasons.
-
 # Amazon (Music) mediathek
 Unofficial Kodi addon for Amazon Prime Music and Amazon Unlimited Music to search and play Music.
 An Amazon account is necessary to use the service.
 
+> [!IMPORTANT]
+> Playback only works on Kodi for Android. On desktop platforms Amazon's licence server refuses the DRM licence
+> with `VMP_VALIDATION_FAILED`, because Kodi cannot provide a Widevine Verified Media Path.
+> Browsing and searching work everywhere.
+
+## Origin
+This addon is based on [Amazon (Music) mediathek](https://github.com/spacys/mediathek) by spacy, whose development was stopped. It is developed further here, independently of the original, and uses its own addon id `plugin.audio.amazonmedia.ksooo`, so both can be installed side by side.
+
 ## Installation
-Install my [repo](https://github.com/spacys/repoverview) to receive automatically updates or choose the latest [zip-file](https://github.com/spacys/mediathek/tree/master/plugin.audio.amazonmedia) for a manual installation.
+Install [my repository](https://ksooo.github.io/repository.kodi.ksooo/) to receive updates automatically.
 
 ## Motivation
-I want an easy-to-use way to listen Amazon Music through Kodi. That is why I created this addon for private use only.
+An easy-to-use way to listen to Amazon Music through Kodi.
 
 ## Features
 This addon provides an easy access to the Amazon Music world with your own Amazon account. It is possible to search for Playlists, Albums, Songs and Artists; to see the Amazon recommendations, the popular Playlists/Albums and the purchased Albums/Songs.
@@ -17,18 +22,15 @@ This addon provides an easy access to the Amazon Music world with your own Amazo
 To play the songs it is necessary to install as well InputStream Adaptive.
 
 ## Supported Domains
-The following Domains are currently supported:
+Only the German domain is tested. The other domains are prepared and their Amazon sign-in pages answer, but nobody has signed in and played a track there yet. Reports are welcome.
 
 | Country | Domain | URL | Comment |
 |--|--|--|--|
-| Germany | DE | https://music.amazon.de | |
-| France | FR | https://music.amazon.fr | Translation is maybe partially incorrect |
-| Great Britain | UK | https://music.amazon.co.uk | |
-| Italy | IT | https://music.amazon.it | Translation is maybe partially incorrect |
-| Spain | ES | https://music.amazon.es | Translation is missing |
+| Germany | DE | https://music.amazon.de | Tested |
+| France | FR | https://music.amazon.fr | Untested |
+| Great Britain | UK | https://music.amazon.co.uk | Untested |
+| Italy | IT | https://music.amazon.it | Untested |
+| Spain | ES | https://music.amazon.es | Untested |
 
-If you are in a different country located, no worry. Install the addon, add your Top Level Domain to the end of the existing entries in `settings.xml` with the separator `|`. Example: `"DE|FR|UK|IT|ES"`
-
-Do the same in `tools.py` but comma separated. Example: `['de', 'fr', 'co.uk', 'it', 'es']`
-
-Even if the translation is not available Kodi will use the fallback language, which is English. If you are successful, please inform me to add it to the general supported languages/countries and it would be great, if you can provide the translated language file.
+## Languages
+The add-on is translated into German, French and Italian. The language follows Kodi's own language setting, not the domain. For any other language Kodi falls back to English. The French and Italian translations have not been reviewed by native speakers yet; corrections are welcome.
