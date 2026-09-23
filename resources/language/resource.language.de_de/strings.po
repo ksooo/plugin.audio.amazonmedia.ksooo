@@ -170,6 +170,10 @@ msgctxt "#30077"
 msgid "Request failed."
 msgstr "Anfrage fehlgeschlagen."
 
+msgctxt "#30078"
+msgid "Amazon does not release this title for streaming."
+msgstr "Amazon gibt diesen Titel nicht zum Streamen frei."
+
 msgctxt "#30100"
 msgid "General"
 msgstr "Allgemein"

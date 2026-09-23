@@ -23,11 +23,12 @@ class AMplay( AMtools ):
         self.credentials = self.load()
         self._a = AMapi()
         self._c = AMcall()
-        manifest = self.tryGetStreamDash( asin or objectId, 'ASIN' if asin else 'COID' )
+        manifest, status = self.tryGetStreamDash( asin or objectId, 'ASIN' if asin else 'COID' )
         if not manifest:
             xbmc.PlayList(0).clear()
             xbmc.Player().stop()
-            xbmc.executebuiltin('Notification("Information:", %s %s %s, 10000, )'%(self.getTranslation(30073),' ',self.getTranslation(30074)))
+            reason = {'MAX_CONCURRENCY_REACHED': 30075, 'CONTENT_NOT_ELIGIBLE': 30078}.get(status, 30074)
+            xbmc.executebuiltin('Notification("Information:", %s %s %s, 10000, )'%(self.getTranslation(30073),' ',self.getTranslation(reason)))
             return False
         self.writeSongFile( manifest, 'mpd' )
         song = 'http://{}/mpd/{}'.format( self.getSetting('proxy'), 'song.mpd' )
@@ -35,7 +36,7 @@ class AMplay( AMtools ):
 
     def tryGetStreamDash( self, identifier, identifierType ):
         """
-        Get the DASH manifest of the song
+        Get the DASH manifest of the song and the status Amazon answered with
         :param str identifier:      unique song ID
         :param str identifierType:  type of the given ID, 'ASIN' or 'COID'
         """
@@ -45,12 +46,8 @@ class AMplay( AMtools ):
         if status != 'SUCCESS':
             self.log('No manifest for {}: {} {}'.format(
                 identifier, status, content.get('contentResponseStatusMessage')))
-            if status == 'MAX_CONCURRENCY_REACHED':
-                xbmc.PlayList(0).clear()
-                xbmc.Player().stop()
-                xbmc.executebuiltin('Notification("Information:", %s %s %s, 10000, )'%(self.getTranslation(30073),' ',self.getTranslation(30075)))
-            return None
-        return content.get('manifest')
+            return None, status
+        return content.get('manifest'), status
 
     def finalizeItem( self, song, ia=False, lic=False ):
         """
