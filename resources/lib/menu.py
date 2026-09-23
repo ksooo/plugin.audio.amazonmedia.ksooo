@@ -47,7 +47,6 @@ class AMmenu():
                 {'txt':30034,'fct':'search3Songs',          'img':'search.png','search':'search3Songs'},
                 {'txt':30009,'fct':'getPurSongs',           'img':'songs.jpg'},
                 {'txt':30006,'fct':'getAllSongs',           'img':'songs.jpg'},
-                {'txt':30017,'fct':'getRecentlyPlayed',     'img':'songs.jpg'},
                 {'txt':30021,'fct':'getRecentlyAddedSongs', 'img':'songs.jpg'}]
 
     @staticmethod

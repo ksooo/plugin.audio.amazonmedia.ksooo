@@ -88,10 +88,6 @@ class AmazonMedia( AMtools ):
                 asin = self.G['addonArgs'].get('asin', [None])
                 self.getArtistDetails(asin[0])
 
-            elif mode == 'getRecentlyPlayed':
-                items = self._c.amzCall('APIGetRecentTrackActivity', 'recentlyplayed', None, None, 'PLAYED')['recentActivityMap']['PLAYED']
-                self.setAddonContent('recentlyplayed',items,'songs')
-
             elif mode == 'getRecentlyAddedSongs':
                 items = self._c.amzCall('APIV3getTracks','recentlyaddedsongs',None,None,None)
                 self.setAddonContent('recentlyaddedsongs',items,'songs')
@@ -441,17 +437,6 @@ class AmazonMedia( AMtools ):
                     self._i.setListItem(i,{'mode':'lookup','isAlbum':True, 'isAlbumFolder':True, 'isList':True})
                 )
             page, listitem = self._i.addPaginator(param['nextResultsToken'],param['albums'])
-            if page:
-                itemlist.append( listitem )
-
-        elif mode == 'recentlyplayed':          # recently played songs
-            for item in param['recentTrackList']:
-                inf, met = self._i.setData(item,{'mode':'getTrack'})
-                url, li  = self._i.setItem(inf,met)
-                if not self.showUnplayableSongs and not met['isPlayable']:
-                    continue
-                itemlist.append((url, li, False))
-            page, listitem = self._i.addPaginator(param['nextToken'],param['recentTrackList'])
             if page:
                 itemlist.append( listitem )
 

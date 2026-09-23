@@ -204,18 +204,6 @@ class AMcall( AMtools ):
             }
             data = json.dumps(data)
 
-        elif mode == 'recentlyplayed':
-            data = {
-                'activityTypeFilters': [mediatype],
-                'pageToken':        token[0],
-                'lang':             self.credentials.LOCALE,
-                'deviceId':         self.credentials.DEVICEID,
-                'deviceType':       self.credentials.DEVICETYPE,
-                'musicTerritory':   self.credentials.MUSICTERRITORY,
-                'customerId':       self.credentials.CUSTOMERID,
-            }
-            data = json.dumps(data)
-
         elif mode == 'getMetaTracks':
             """
             available fields in attributeList:

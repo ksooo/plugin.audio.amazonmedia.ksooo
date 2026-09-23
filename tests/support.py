@@ -59,6 +59,7 @@ class Kodi:
     progress = []
     directories = []
     items = []
+    typed = ''
     on_wait_for_abort = None
 
 
@@ -94,7 +95,32 @@ class _Player:
         pass
 
 
-xbmc.Monitor, xbmc.PlayList, xbmc.Player = _Monitor, _PlayList, _Player
+class _Keyboard:
+    """Confirms with whatever the test put into Kodi.typed."""
+
+    def __init__(self, *args):
+        pass
+
+    def setHeading(self, heading):
+        pass
+
+    def setDefault(self, text):
+        pass
+
+    def setHiddenInput(self, hidden):
+        pass
+
+    def doModal(self):
+        pass
+
+    def isConfirmed(self):
+        return True
+
+    def getText(self):
+        return Kodi.typed
+
+
+xbmc.Monitor, xbmc.PlayList, xbmc.Player, xbmc.Keyboard = _Monitor, _PlayList, _Player, _Keyboard
 
 # xbmcgui
 xbmcgui = types.ModuleType('xbmcgui')
@@ -258,6 +284,7 @@ class AddonTest(unittest.TestCase):
         for record in (Kodi.log, Kodi.builtins, Kodi.notifications, Kodi.progress,
                        Kodi.directories, Kodi.items):
             del record[:]
+        Kodi.typed = ''
         Kodi.on_wait_for_abort = None
         invoke()
 

@@ -54,10 +54,6 @@ msgctxt "#30014"
 msgid "Artist - Search"
 msgstr "Artista - Ricerca"
 
-msgctxt "#30017"
-msgid "Songs - Recently Played"
-msgstr "Canzoni - Ascoltate recentemente"
-
 msgctxt "#30018"
 msgid "Playlists - Followed"
 msgstr "Playlists - Seguite"

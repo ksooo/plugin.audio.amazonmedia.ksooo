@@ -74,10 +74,6 @@ class AMapi():
         #     'path':   'https://eu.web.skill.music.a2z.com/api/showLibraryPlaylists',
         #     'target': ''
         # }
-        elif amapi == 'APIGetRecentTrackActivity':
-            s = {   'path':   'nimbly/',
-                    'target': 'com.amazon.nimblymusicservice.NimblyMusicService.GetRecentTrackActivity'
-            }
         else:
             raise Exception("No API provided!")
 

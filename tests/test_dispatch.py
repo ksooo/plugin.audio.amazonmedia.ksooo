@@ -18,7 +18,7 @@ class FailedRequest(AddonTest):
         self.stored = [os.path.join(Kodi.profile, name) for name in ('cookie', 'data.obj')]
         for path in self.stored:
             open(path, 'w').close()
-        invoke('mode=getRecentlyPlayed')
+        invoke('mode=getPopularPlayLists')
         self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess()))
         self.patch(AMcall, 'amzCall', side_effect=ValueError('Amazon answered 500'))
         self.logon = self.patch(AMlogon, 'amazonLogon')

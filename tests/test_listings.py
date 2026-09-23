@@ -39,11 +39,12 @@ class Playability(AddonTest):
     def test_a_title_outside_the_catalogue_is_unplayable_and_red(self):
         self.assertEqual(self.marked(UNAVAILABLE_TRACK, 'PRIME'), (False, RED))
 
-    def test_a_prime_account_sees_the_catalogue_in_a_song_list(self):
-        invoke('mode=getRecentlyPlayed')
+    def test_a_prime_account_finds_the_catalogue_in_a_song_search(self):
+        Kodi.settings['search1Songs'] = 'jazz'
+        invoke('mode=search1Songs')
         self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess(), 'PRIME'))
-        self.patch(AMcall, 'amzCall', return_value={'recentActivityMap': {'PLAYED': {
-            'recentTrackList': [dict(CATALOGUE_TRACK), dict(UNAVAILABLE_TRACK)], 'nextToken': None}}})
+        self.patch(AMcall, 'amzCall', return_value={'results': [{
+            'hits': [{'document': dict(CATALOGUE_TRACK)}, {'document': dict(UNAVAILABLE_TRACK)}], 'nextPage': None}]})
         AmazonMedia().reqDispatch()
         self.assertEqual([li.label for url, li, folder in Kodi.items], ['Big in Japan'])
 
