@@ -286,7 +286,7 @@ class AMtools( Singleton ):
             file = '{}{}{}'.format( self.G['addonUDatFo'], os.sep, f )
             self.delFile( file )
 
-    def createList( self, data, dynentry=False, soccer=False ):
+    def createList( self, data, dynentry=False ):
         """
         Create list entries for Kodi menu
         :param array data:      content of Kodi menu
@@ -299,8 +299,7 @@ class AMtools( Singleton ):
             isFolder = True
             if dynentry and 'search' in item and self.getSetting(item['search']) == '':
                 continue
-            # if soccer:
-            if soccer or ('special' in item and item['special'] == 'newrecom'):
+            if 'special' in item and item['special'] == 'newrecom':
                 title = item['txt']
             else:
                 title = self.getTranslation(item['txt'])
@@ -325,14 +324,6 @@ class AMtools( Singleton ):
                     'landscape':url
                 })
             url = '{}?mode={}'.format( self.G['addonBaseUrl'], str(item['fct']) )
-            if soccer:
-                url+="&objectId={}".format(str(item['target']))
-                if item['playable']:
-                    pl = 'true'
-                else:
-                    pl = 'false'
-                li.setProperty('IsPlayable', pl)
-                isFolder = False
             if 'special' in item and item['special'] == 'newrecom' and 'target' in item:
                 url+='&target={}'.format(str(item['target']))
             itemlist.append((url, li, isFolder))

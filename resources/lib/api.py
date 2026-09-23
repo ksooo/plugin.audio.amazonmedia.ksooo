@@ -92,38 +92,6 @@ class AMapi():
             s = {   'path':   'nimbly/',
                     'target': 'com.amazon.nimblymusicservice.NimblyMusicService.GetRecentTrackActivity'
             }
-        # soccer live
-        elif amapi == 'APIGetSoccerMain':
-            s = {   'path':   'eve/getPrograms',
-                    'target': 'com.amazon.eventvendingservice.EventVendingService.getProgramDetails'
-            }
-        elif amapi == 'APIGetSoccerProgramDetails':
-            s = {   'path':   'eve/getProgramDetails',
-                    'target': 'com.amazon.eventvendingservice.EventVendingService.getProgramDetails'
-            }
-        elif amapi == 'APIGetSoccerLiveURLs':
-            s = {   'path':   'amals/getLiveStreamingUrls',
-                    'target': 'com.amazon.amazonmusicaudiolocatorservice.model.AmazonMusicAudioLocatorServiceExternal.GetLiveStreamingURLs'
-            }
-        elif amapi == 'APIGetSoccerOnDemandURLs':
-            s = {   'path':   'amals/getOnDemandStreamingURLs',
-                    'target': 'com.amazon.amazonmusicaudiolocatorservice.model.AmazonMusicAudioLocatorServiceExternal.GetOnDemandStreamingURLs'
-            }
-        # podcasts
-        # api/podcast
-        # https://music-uk-dub.dub.proxy.amazon.com/EU/api/podcast/ " + t + "/visual"
-        # https://music.amazon.com/" + e + "/api/podcast/" + t + "/visual"
-        elif amapi == 'APIGetPodcast':
-            s = {   'path':   'podcast',
-                    'target': 'Podcast.Web.WidgetsInterface.LibraryShowsWidgetElement'
-            }
-        # "/podcasts/" + e.podcastId + "/" + encodeURI(e.podcastTitle),
-        # "/podcasts/" + e.podcastId + "/episodes/" + e.episodeId + "/" + a,
-        # "/podcasts/" + e.podcastId + "/" + encodeURI(e.podcastTitle),
-        # preset: '{"podcastId":"' + e.podcastId + '","startAtEpisodeId":"' + e.episodeId + '"}',
-        # e.PODCAST_LIBRARY_RECENTS_WIDGET = "Podcast.Web.WidgetsInterface.BookmarkedEpisodesWidgetElement",
-        # e.PODCAST_LIBRARY_PLAYLIST_WIDGET = "Podcast.Web.WidgetsInterface.LibraryPlaylistWidgetElement",
-        # e.PODCAST_LIBRARY_SHOWS_WIDGET = "Podcast.Web.WidgetsInterface.LibraryShowsWidgetElement"
         else:
             raise Exception("No API provided!")
 
