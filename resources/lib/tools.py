@@ -269,7 +269,6 @@ class AMtools( Singleton ):
             'search1Artists': '',
             'search2Artists': '',
             'search3Artists': '',
-            'captcha': '',
             'userAgent': ''
         }
         for key, value in data.items():

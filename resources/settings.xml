@@ -28,7 +28,6 @@
         <setting id="search2Artists"    type="text" visible="false" label="search2Artists"   default=""/>
         <setting id="search3Artists"    type="text" visible="false" label="search3Artists"   default=""/>
         <setting id="proxy"             type="text" visible="false" label="proxy"            default=""/>
-        <setting id="captcha"           type="text" visible="false" label="captcha"          default=""/>
         <setting id="userAgent"         type="text" visible="false" label="userAgent"        default=""/>
     </category>
 </settings>
