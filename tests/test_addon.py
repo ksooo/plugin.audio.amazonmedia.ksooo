@@ -1,0 +1,29 @@
+"""addon.xml against what the Kodi repositories accept."""
+
+import os
+import unittest
+import xml.etree.ElementTree as ElementTree
+
+from .support import ROOT
+
+
+class News(unittest.TestCase):
+    def setUp(self):
+        news = ElementTree.parse(os.path.join(ROOT, 'addon.xml')).getroot().find('.//news')
+        if news is None:
+            self.skipTest('addon.xml carries no news')
+        self.news = news.text.strip()
+
+    def test_the_news_fit_into_what_the_repositories_accept(self):
+        # The addon.xml schema of the Kodi repositories caps the news at 1500 characters.
+        self.assertLessEqual(len(self.news), 1500)
+
+    def test_the_news_are_about_the_latest_version_of_the_changelog(self):
+        # The news sum the latest changelog entry up; they must not be left at an older version.
+        with open(os.path.join(ROOT, 'changelog.txt'), encoding='utf-8') as handle:
+            latest = handle.readline().strip()
+        self.assertEqual(self.news.splitlines()[0], latest)
+
+
+if __name__ == '__main__':
+    unittest.main()
