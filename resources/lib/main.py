@@ -484,12 +484,17 @@ class AmazonMedia( AMtools ):
             for item in param['resultList']:
                 meta.append(item['metadata']['albumAsin'])
             meta = self._c.amzCall('APIlookup','itemLookup',None,meta,['fullAlbumDetails'])['albumList']
+            known = [i['asin'] for i in meta]
 
             for i in param['resultList']:
                 sortArray.append(i['metadata'])
             sortArray.sort(key=lambda x: x['sortAlbumName'])
 
             for item in sortArray:
+                # The library does not say whether an album was bought. One it lists as available
+                # that the catalogue does not know can only be there because it was.
+                if self.getMode() == 'getPurAlbums' or item['albumAsin'] not in known:
+                    item['purchased'] = True
                 inf, met = self._i.setData(item,{'mode':'lookup', 'isAlbumFolder':True, 'isAlbum':True})
                 for i in meta:
                     if item['albumAsin'] == i['asin']:

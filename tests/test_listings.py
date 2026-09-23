@@ -2,6 +2,7 @@
 
 import json
 import unittest
+from urllib.parse import parse_qs, urlparse
 
 from .support import AddonTest, Kodi, Response, invoke, signed_in
 from resources.lib import amzcall
@@ -52,19 +53,23 @@ class Playability(AddonTest):
 class Amazon:
     """Answers the add-on's requests the way the Amazon Music API does."""
 
-    def __init__(self):
+    def __init__(self, in_catalogue=True):
         self.requests = []
+        self.in_catalogue = in_catalogue
 
     def post(self, url, headers, data, cookies=None):
         operation = headers['X-Amz-Target'].rsplit('.', 1)[-1]
         self.requests.append((url, operation, json.loads(data)))
         if operation == 'getAlbums':
-            # Cirrus v3 knows an album by albumAsin only; it has no asin field.
+            # Cirrus v3 knows an album by albumAsin only, and does not say whether it was bought.
             return Response({'resultList': [{'metadata': {
                 'albumAsin': 'B0LIBALBUM', 'albumName': 'A Library Album', 'sortAlbumName': 'library album',
                 'albumArtistName': 'An Artist', 'objectId': 'object-id'}}], 'totalCount': 1})
         if operation == 'lookup':
-            return Response({'albumList': [{'asin': 'B0LIBALBUM', 'title': 'A Library Album', 'purchased': True}]})
+            # The catalogue knows nothing of a purchase, and nothing of an album it does not carry.
+            albums = [{'asin': 'B0LIBALBUM', 'title': 'A Library Album', 'isPrime': False,
+                       'isMusicSubscription': True}] if self.in_catalogue else []
+            return Response({'albumList': albums})
         raise AssertionError('unexpected request: ' + operation)
 
 
@@ -93,6 +98,22 @@ class Library(AddonTest):
         AmazonMedia().reqDispatch()
         lookups = [body for _, operation, body in self.amazon.requests if operation == 'lookup']
         self.assertEqual(lookups[0]['asins'], ['B0LIBALBUM'])
+
+    def listed_album(self, query):
+        invoke(query)
+        AmazonMedia().reqDispatch()
+        url, li, folder = Kodi.items[0]
+        return li.label, parse_qs(urlparse(url).query)['mode'][0]
+
+    def test_a_purchased_album_is_gold_and_opens(self):
+        self.assertEqual(self.listed_album('mode=getPurAlbums'), (GOLD % 'A Library Album', 'lookup'))
+
+    def test_a_library_album_the_catalogue_does_not_carry_is_gold_and_opens(self):
+        self.amazon.in_catalogue = False
+        self.assertEqual(self.listed_album('mode=getAllAlbums'), (GOLD % 'A Library Album', 'lookup'))
+
+    def test_an_album_added_from_the_catalogue_is_not_taken_for_a_purchase(self):
+        self.assertEqual(self.listed_album('mode=getAllAlbums'), (PLAIN % 'A Library Album', 'lookup'))
 
 
 class AlbumOrder(AddonTest):
