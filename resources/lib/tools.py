@@ -29,6 +29,8 @@ class AMtools( Singleton ):
         self.G['addonUDatFo']   = xbmcvfs.translatePath( 'special://profile/addon_data/{}'.format( self.getInfo('id') ) )
 
         self.G['TLDlist']       = ['de', 'fr', 'co.uk', 'it', 'es']
+        # Amazon reports a country code as music territory, which differs from the top level domain
+        self.G['territoryTLD']  = {'gb': 'co.uk'}
 
         self.credentials        = AMaccess()
         self.credentials.USERTLD = self.G['TLDlist'][int(self.getSetting('userTLD'))]

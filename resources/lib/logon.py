@@ -366,9 +366,10 @@ class AMlogon( AMtools ):
         self.credentials.LOCALE =            app_config['displayLanguage']
         self.credentials.CUSTOMERLANG =      app_config['musicTerritory'].lower()
         self.credentials.REGION =            app_config['siteRegion']
+        territory = app_config['musicTerritory'].lower()
         self.set_userTLD(
             self.checkUserTLD(
-                app_config['musicTerritory'].lower(),
+                self.G['territoryTLD'].get(territory, territory),
                 self.G['TLDlist']
             )
         )
