@@ -175,6 +175,17 @@ class AMlogon( AMtools ):
             return self._text(heading) + os.linesep + self._text(heading.find_next('p'))
         return self.getTranslation(30070)
 
+    def _approvalMessage( self, soup ):
+        """
+        The approval prompt, followed by what Amazon says about the notification it sent
+        """
+        lines = [self._text(t) for t in soup.find_all('span', class_='transaction-approval-word-break')]
+        details = soup.find(id='channelDetailsWithImprovedLayout')
+        if details:
+            lines += [': '.join(self._text(c) for c in row.find_all(class_='a-column'))
+                      for row in details.find_all(class_='a-row')]
+        return os.linesep.join(line for line in lines if line)
+
     def _checkMFA( self ):
         """
         Handle the verification steps Amazon may add after the password was accepted
@@ -195,8 +206,7 @@ class AMlogon( AMtools ):
             elif 'verification-code-form' in self._content:
                 self.log('MFA - approval code')
                 form = soup.find('form', id='verification-code-form')
-                msg = os.linesep.join(self._text(t) for t in soup.find_all('span', class_='transaction-approval-word-break'))
-                ok = self._submitInput(msg or self._text(form), 'otpCode', 'form#verification-code-form')
+                ok = self._submitInput(self._approvalMessage(soup) or self._text(form), 'otpCode', 'form#verification-code-form')
             elif 'cvf-widget-form' in self._content:
                 ok = self._cvfForm(soup)
             elif 'pollingForm' in self._content:
@@ -290,7 +300,7 @@ class AMlogon( AMtools ):
         Amazon sent an approval request to another device, the sign-in page polls for the result
         """
         self.log('MFA - waiting for approval')
-        message = os.linesep.join(self._text(t) for t in soup.find_all('span', class_='transaction-approval-word-break'))
+        message = self._approvalMessage(soup)
         page_url = self._br.url
         query = urlparse.parse_qs(urlparse.urlparse(page_url).query)
         return_to = query.get('openid.return_to', [self.musicURL.format(self.credentials.USERTLD)])[0]
