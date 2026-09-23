@@ -1,0 +1,271 @@
+"""Stand-ins for the Kodi modules, so that the add-on can run outside Kodi.
+
+They record what the add-on asks Kodi to do. That record is what the tests
+look at, rather than the add-on's internals.
+"""
+
+import json
+import os
+import re
+import shutil
+import sys
+import tempfile
+import types
+import unittest
+from unittest import mock
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+
+ADDON_ID = 'plugin.audio.amazonmedia.ksooo'
+BASE_URL = 'plugin://{}/'.format(ADDON_ID)
+HANDLE = 1
+
+# The add-on does not ship Kodi's own strings; the few it uses are named here.
+KODI_STRINGS = {257: 'Error'}
+
+LANGUAGE_FOLDER = os.path.join(ROOT, 'resources', 'language')
+SOURCE_LANGUAGE = 'en_gb'
+# Every language the add-on ships, as the language folder holds them.
+LANGUAGES = sorted(name[len('resource.language.'):] for name in os.listdir(LANGUAGE_FOLDER)
+                   if name.startswith('resource.language.'))
+TRANSLATIONS = [language for language in LANGUAGES if language != SOURCE_LANGUAGE]
+# Had nothing been found, the tests that go through the languages would pass without looking at one.
+assert SOURCE_LANGUAGE in LANGUAGES and TRANSLATIONS, LANGUAGES
+
+
+def _english():
+    path = os.path.join(LANGUAGE_FOLDER, 'resource.language.%s' % SOURCE_LANGUAGE, 'strings.po')
+    with open(path, encoding='utf-8') as handle:
+        return {int(number): text
+                for number, text in re.findall(r'msgctxt "#(\d+)"\nmsgid "(.*)"', handle.read())}
+
+
+ENGLISH = _english()
+
+
+def text(number):
+    """What Kodi shows for one of the add-on's strings."""
+    return ENGLISH[number]
+
+
+class Kodi:
+    """Everything the add-on asked of Kodi since the last reset."""
+    settings = {}
+    profile = None
+    log = []
+    builtins = []
+    notifications = []
+    progress = []
+    directories = []
+    items = []
+    on_wait_for_abort = None
+
+
+# xbmc
+xbmc = types.ModuleType('xbmc')
+xbmc.LOGDEBUG, xbmc.LOGINFO, xbmc.LOGWARNING, xbmc.LOGERROR = 0, 1, 2, 4
+xbmc.log = lambda msg, level=xbmc.LOGDEBUG: Kodi.log.append((level, msg))
+xbmc.executebuiltin = lambda command, wait=False: Kodi.builtins.append(command)
+xbmc.sleep = lambda milliseconds: None
+xbmc.getLocalizedString = lambda number: KODI_STRINGS.get(number, '')
+
+
+class _Monitor:
+    def abortRequested(self):
+        return False
+
+    def waitForAbort(self, timeout=0):
+        if Kodi.on_wait_for_abort:
+            Kodi.on_wait_for_abort()
+        return True
+
+
+class _PlayList:
+    def __init__(self, kind):
+        pass
+
+    def clear(self):
+        pass
+
+
+class _Player:
+    def stop(self):
+        pass
+
+
+xbmc.Monitor, xbmc.PlayList, xbmc.Player = _Monitor, _PlayList, _Player
+
+# xbmcgui
+xbmcgui = types.ModuleType('xbmcgui')
+xbmcgui.NOTIFICATION_INFO, xbmcgui.NOTIFICATION_WARNING, xbmcgui.NOTIFICATION_ERROR = 'info', 'warning', 'error'
+
+
+class _Dialog:
+    def notification(self, heading, message, icon='info', time=5000, sound=True):
+        Kodi.notifications.append({'heading': heading, 'message': message, 'icon': icon})
+
+
+class _DialogProgress:
+    def create(self, heading, message=''):
+        Kodi.progress.append(message)
+
+    def iscanceled(self):
+        return False
+
+    def close(self):
+        pass
+
+
+class _ListItem:
+    def __init__(self, label='', **kwargs):
+        self.label = label
+        self.properties = {}
+
+    def setArt(self, art):
+        pass
+
+    def setProperty(self, key, value):
+        self.properties[key] = value
+
+    def getMusicInfoTag(self):
+        return types.SimpleNamespace(setTitle=lambda title: None)
+
+
+xbmcgui.Dialog, xbmcgui.DialogProgress, xbmcgui.ListItem = _Dialog, _DialogProgress, _ListItem
+
+# xbmcaddon
+xbmcaddon = types.ModuleType('xbmcaddon')
+
+
+class _Addon:
+    def __init__(self, addon_id=None):
+        pass
+
+    def getSetting(self, key):
+        return Kodi.settings.get(key, '')
+
+    def setSetting(self, key, value):
+        Kodi.settings[key] = value
+
+    def getAddonInfo(self, key):
+        return {'id': ADDON_ID, 'name': 'Amazon Media', 'path': ROOT}[key]
+
+    def getLocalizedString(self, number):
+        return ENGLISH.get(number, '')
+
+
+xbmcaddon.Addon = _Addon
+
+# xbmcplugin
+xbmcplugin = types.ModuleType('xbmcplugin')
+xbmcplugin.endOfDirectory = lambda handle, succeeded=True, *args, **kwargs: \
+    Kodi.directories.append((handle, succeeded))
+xbmcplugin.addDirectoryItems = lambda handle, items, total=0: Kodi.items.extend(items)
+xbmcplugin.setContent = lambda handle, content: None
+xbmcplugin.setResolvedUrl = lambda handle, succeeded, item: None
+
+# xbmcvfs
+xbmcvfs = types.ModuleType('xbmcvfs')
+
+
+def _translate_path(path):
+    path = path.replace('special://profile/addon_data/{}'.format(ADDON_ID), Kodi.profile)
+    return path.replace('special://home/addons/{}'.format(ADDON_ID), ROOT)
+
+
+class _File:
+    def __init__(self, path):
+        with open(path, 'rb') as handle:
+            self._data = handle.read()
+
+    def size(self):
+        return len(self._data)
+
+    def readBytes(self):
+        return self._data
+
+    def close(self):
+        pass
+
+
+xbmcvfs.translatePath, xbmcvfs.File = _translate_path, _File
+
+# infotagger, a script module from the Kodi repository
+infotagger = types.ModuleType('infotagger')
+infotagger_listitem = types.ModuleType('infotagger.listitem')
+
+
+class _ListItemInfoTag:
+    def __init__(self, listitem, tag_type='music'):
+        pass
+
+    def set_info(self, info):
+        pass
+
+
+infotagger_listitem.ListItemInfoTag = _ListItemInfoTag
+infotagger.listitem = infotagger_listitem
+
+sys.modules.update({'xbmc': xbmc, 'xbmcgui': xbmcgui, 'xbmcaddon': xbmcaddon,
+                    'xbmcplugin': xbmcplugin, 'xbmcvfs': xbmcvfs,
+                    'infotagger': infotagger, 'infotagger.listitem': infotagger_listitem})
+
+from resources.lib.singleton import _Singleton  # noqa: E402  (needs the modules above)
+
+
+def invoke(query=''):
+    """Start a new plugin call with the arguments Kodi hands it, e.g. invoke('mode=getPurAlbums').
+
+    Kodi runs every call in a fresh interpreter, so nothing the add-on built
+    for an earlier call may carry over.
+    """
+    _Singleton._instances.clear()
+    sys.argv = [BASE_URL, str(HANDLE), '?' + query]
+
+
+def signed_in(credentials, tier='PRIME'):
+    """Fill the credentials as a successful sign-in on amazon.de leaves them."""
+    credentials.ACCESSTOKEN = 'Bearer access-token'
+    credentials.CSRF_TOKEN, credentials.CSRF_TS, credentials.CSRF_RND = 'csrf', '1', '2'
+    credentials.DEVICEID, credentials.DEVICETYPE = 'device-id', 'device-type'
+    credentials.CUSTOMERID, credentials.MARKETPLACEID = 'customer-id', 'marketplace-id'
+    credentials.MUSICTERRITORY, credentials.CUSTOMERLANG = 'DE', 'de'
+    credentials.LOCALE, credentials.REGION, credentials.USERTLD = 'de_DE', 'EU', 'de'
+    credentials.ACCESSTYPE = tier
+    return credentials
+
+
+class Response:
+    """A requests response, as far as the add-on reads it."""
+
+    def __init__(self, body, status=200):
+        self.text = body if isinstance(body, str) else json.dumps(body)
+        self.status_code = status
+        self.reason = 'OK' if status == 200 else 'Error'
+
+    def json(self):
+        return json.loads(self.text)
+
+
+class AddonTest(unittest.TestCase):
+    """Starts every test as a fresh plugin call with the default settings."""
+
+    def setUp(self):
+        Kodi.profile = tempfile.mkdtemp()
+        Kodi.settings = {'userTLD': '0', 'logging': 'false', 'showcolentr': 'true',
+                         'showimages': 'true', 'showUnplayableSongs': 'false'}
+        for record in (Kodi.log, Kodi.builtins, Kodi.notifications, Kodi.progress,
+                       Kodi.directories, Kodi.items):
+            del record[:]
+        Kodi.on_wait_for_abort = None
+        invoke()
+
+    def tearDown(self):
+        shutil.rmtree(Kodi.profile, ignore_errors=True)
+
+    def patch(self, target, attribute, *args, **kwargs):
+        """mock.patch.object for the rest of the test."""
+        patcher = mock.patch.object(target, attribute, *args, **kwargs)
+        self.addCleanup(patcher.stop)
+        return patcher.start()
