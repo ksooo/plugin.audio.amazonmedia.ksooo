@@ -36,8 +36,10 @@ class ServiceManager():
             self.log('Proxy Server started')
 
         def _stop_server():
-            self.proxy.server_close()
+            # shutdown() first: it ends the accept loop, which server_close()
+            # expects to be gone before it takes the socket away.
             self.proxy.shutdown()
+            self.proxy.server_close()
             self.proxy_thread.join()
             self.setSetting('proxy','')
             del self.monitor

@@ -8,7 +8,9 @@ from urllib.parse import urlparse, parse_qsl
 import xbmc, xbmcvfs, xbmcaddon
 
 class ProxyHTTPD(BaseHTTPRequestHandler):
-    protocol_version = 'HTTP/1.1'  # Allow keep-alive
+    # HTTP/1.0, so the client closes the connection after the manifest it asked
+    # for. Kept open, the handler thread would sit in a read until Kodi exits.
+    protocol_version = 'HTTP/1.0'
     server_version = 'AmazonMadia/0.1'
 
     def log_message(self, *args):
@@ -65,6 +67,10 @@ class ProxyHTTPD(BaseHTTPRequestHandler):
             self.send_error(501, 'Invalid request')
 
 class ProxyTCPD(ThreadingTCPServer):
+    # As ThreadingHTTPServer does it: server_close() waits for every handler
+    # thread otherwise, which holds up the shutdown of Kodi.
+    daemon_threads = True
+
     def __init__(self):
         """ Initialisation of the Proxy TCP server """
         from socket import socket, AF_INET, SOCK_STREAM
