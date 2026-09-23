@@ -61,14 +61,14 @@ class AMapi():
             s = {   'path':   'textsearch/search/v1_1/',
                     'target': 'com.amazon.tenzing.textsearch.v1_1.TenzingTextSearchServiceExternalV1_1.search'
             }
-        elif amapi == 'APIcirrus':
-            s = {   'path'  : 'cirrus/',
-                    'target': None
-            }
         elif amapi == 'APIV3getTracks':
             s = {   'path':   'cirrus/v3/',
                     'target': 'com.amazon.cirrus.libraryservice.v3.CirrusLibraryServiceExternalV3.getTracks',
                     'operation': 'getTracks'
+            }
+        elif amapi == 'APIV3getAlbums':
+            s = {   'path':   'cirrus/v3/',
+                    'target': 'com.amazon.cirrus.libraryservice.v3.CirrusLibraryServiceExternalV3.getAlbums'
             }
         elif amapi == 'APIgetPlaylistsByIdV2':
             s = {   'path':   'playlists/',

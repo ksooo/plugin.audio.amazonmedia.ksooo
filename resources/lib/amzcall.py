@@ -10,6 +10,40 @@ class AMcall( AMtools ):
     """
     Common class for the Amazon API calls
     """
+    LIBRARY_ALBUM_ATTRIBUTES = ['albumName', 'albumArtistName', 'albumAsin', 'objectId',
+                                'albumCoverImageFull', 'sortAlbumName', 'albumReleaseDate', 'primaryGenre']
+    LIBRARY_TRACK_ATTRIBUTES = ['trackNum', 'discNum', 'duration', 'albumReleaseDate', 'primaryGenre',
+                                'albumName', 'artistName', 'title', 'asin', 'objectId', 'albumAsin',
+                                'artistAsin', 'purchased', 'status', 'primeStatus', 'albumCoverImageFull']
+
+    def libraryData( self, attributes, filters, sort, order='ASC', paged=False ):
+        """
+        Request body of a Cirrus v3 library call
+        :param array attributes:    item fields to return
+        :param array filters:       filterList entries
+        :param str sort:            attribute to sort by
+        :param str order:           ASC or DESC
+        :param bool paged:          pass on the page token of the current request
+        """
+        data = {
+            'filterList':       filters,
+            'attributeList':    attributes,
+            'sortOrder':        {'sort': sort, 'order': order},
+            'maxResults':       self.G['maxResults'],
+            'musicTerritory':   self.credentials.MUSICTERRITORY,
+            'customerId':       self.credentials.CUSTOMERID,
+            'deviceId':         self.credentials.DEVICEID,
+            'deviceType':       self.credentials.DEVICETYPE
+        }
+        token = self.G['addonArgs'].get('token', [None])[0] if paged else None
+        if token:
+            data['nextToken'] = token
+        return json.dumps(data)
+
+    @staticmethod
+    def libraryFilter( name, value, comparison='EQUALS' ):
+        return {'attributeName': name, 'comparisonType': comparison, 'attributeValue': value}
+
     def getMaestroID( self ):
         """
         Calculate random Player ID
@@ -236,29 +270,16 @@ class AMcall( AMtools ):
             data = json.JSONEncoder().encode(data)
 
         elif mode == 'recentlyaddedsongs':
-            data = {
-                'selectCriteria': None,
-                'albumArtUrlsRedirects': 'false',
-                'distinctOnly': 'false',
-                'countOnly': 'false',
-                'sortCriteriaList': None,
-                'maxResults': self.G['maxResults'],
-                'nextResultsToken': self.G['addonArgs'].get('token', [0])[0],
-                'selectCriteriaList.member.1.attributeName': 'status',
-                'selectCriteriaList.member.1.comparisonType': 'EQUALS',
-                'selectCriteriaList.member.1.attributeValue': 'AVAILABLE',
-                'selectCriteriaList.member.2.attributeName': 'creationDate',
-                'selectCriteriaList.member.2.comparisonType': 'GREATER_THAN',
-                'selectCriteriaList.member.2.attributeValue': datetime.date.today()-datetime.timedelta(days=90),
-                'sortCriteriaList.member.1.sortColumn': 'creationDate',
-                'sortCriteriaList.member.1.sortType': 'DESC',
-                'Operation': 'selectTrackMetadata',
-                'caller': 'getServerSmartList',
-                'ContentType': 'JSON',
-                'customerInfo.customerId':  self.credentials.CUSTOMERID,
-                'customerInfo.deviceId':    self.credentials.DEVICEID,
-                'customerInfo.deviceType':  self.credentials.DEVICETYPE
-            }
+            data = self.libraryData(
+                self.LIBRARY_TRACK_ATTRIBUTES,
+                [
+                    self.libraryFilter('status', 'AVAILABLE'),
+                    self.libraryFilter('creationDate',
+                                       str(datetime.date.today() - datetime.timedelta(days=90)),
+                                       'GREATER_THAN')
+                ],
+                'creationDate', 'DESC', paged=True
+            )
 
         elif mode == 'followedplaylists':
             data = {
@@ -344,55 +365,14 @@ class AMcall( AMtools ):
             data = json.dumps(data)
             #data = json.JSONEncoder().encode(data)
 
-        elif mode == 'getPurchased': # purchased and all Songs / purchased Albums
-            data = {
-                'searchReturnType': mediatype[0],
-                'searchCriteria.member.1.attributeName': 'assetType',
-                'searchCriteria.member.1.comparisonType': 'EQUALS',
-                'searchCriteria.member.1.attributeValue': 'AUDIO',
-                'searchCriteria.member.2.attributeName':  'status',
-                'searchCriteria.member.2.comparisonType': 'EQUALS',
-                'searchCriteria.member.2.attributeValue': 'AVAILABLE',
-                #'searchCriteria.member.3.attributeName':  filter[0],
-                #'searchCriteria.member.3.comparisonType': filter[1],
-                #'searchCriteria.member.3.attributeValue': filter[2],
-                'albumArtUrlsRedirects': 'false',
-                'distinctOnly': 'false',
-                'countOnly': 'false',
-                'selectedColumns.member.1': 'trackNum',
-                'selectedColumns.member.2': 'discNum',
-                'selectedColumns.member.3': 'duration',
-                'selectedColumns.member.4': 'albumReleaseDate',
-                'selectedColumns.member.5': 'primaryGenre',
-                'selectedColumns.member.6': 'albumName',
-                'selectedColumns.member.7': 'artistName',
-                'selectedColumns.member.8': 'title',
-                'selectedColumns.member.9': 'asin',
-                'selectedColumns.member.10': 'objectId',
-                'selectedColumns.member.11': 'albumCoverImageFull',
-                'selectedColumns.member.12': 'purchased',
-                'selectedColumns.member.13': 'status',
-                'selectedColumns.member.14': 'primeStatus',
-                'selectedColumns.member.15': 'sortAlbumName',
-                'selectedColumns.member.16': 'sortTitle',
-                'sortCriteriaList': None,
-                'maxResults': self.G['maxResults'],
-                'nextResultsToken': token[0],
-                'Operation': 'searchLibrary',
-                'caller': mediatype[1],
-                'sortCriteriaList.member.1.sortColumn': mediatype[2],
-                'sortCriteriaList.member.1.sortType': 'ASC',
-                'ContentType': 'JSON',
-                'customerInfo.customerId': self.credentials.CUSTOMERID,
-                'customerInfo.deviceId': self.credentials.DEVICEID,
-                'customerInfo.deviceType': self.credentials.DEVICETYPE
-            }
-            if self.getMode() == 'getPurSongs' or self.getMode() == 'getPurAlbums':
-                data['searchCriteria.member.3.attributeName']  = 'purchased'
-                data['searchCriteria.member.3.comparisonType'] = 'EQUALS'
-                data['searchCriteria.member.3.attributeValue'] = 'true'
-            #else:
-                #filter = ['primeStatus','NOT_EQUALS','NOT_PRIME']
+        elif mode in ['getLibraryAlbums', 'getLibrarySongs']: # the whole library or only what was bought
+            filters = [ self.libraryFilter('status', 'AVAILABLE') ]
+            if self.getMode() in ['getPurAlbums', 'getPurSongs']:
+                filters.append( self.libraryFilter('purchased', 'true') )
+            if mode == 'getLibraryAlbums':
+                data = self.libraryData( self.LIBRARY_ALBUM_ATTRIBUTES, filters, 'albumName', paged=True )
+            else:
+                data = self.libraryData( self.LIBRARY_TRACK_ATTRIBUTES, filters, 'title', paged=True )
 
         elif mode == 'songs':
             data  = {
@@ -418,76 +398,15 @@ class AMcall( AMtools ):
             }
             data = json.JSONEncoder().encode(data)
 
-        elif mode == 'itemLookup2ndRound':
-            data = {
-                'selectCriteriaList.member.1.attributeName':'status',
-                'selectCriteriaList.member.1.comparisonType':'EQUALS',
-                'selectCriteriaList.member.1.attributeValue':'AVAILABLE',
-                'selectCriteriaList.member.2.attributeName':'trackStatus',
-                'selectCriteriaList.member.2.comparisonType':'IS_NULL',
-                'selectCriteriaList.member.2.attributeValue':'',
-                'selectCriteriaList.member.3.attributeName':'albumAsin',
-                'selectCriteriaList.member.3.comparisonType':'EQUALS',
-                'selectCriteriaList.member.3.attributeValue':asin,
-                'sortCriteriaList':'',
-                'albumArtUrlsSizeList.member.1':'FULL',
-                'albumArtUrlsSizeList.member.2':'LARGE',
-                'albumArtUrlsRedirects':'false',
-                'maxResults':   self.G['maxResults'],
-                'nextResultsToken':0,
-                'Operation':'selectTrackMetadata',
-                'distinctOnly':'false',
-                'countOnly':'false',
-                'caller':'getServerData',
-                'selectedColumns.member.1':'albumArtistName',
-                'selectedColumns.member.2':'albumAsin',
-                'selectedColumns.member.3':'albumName',
-                'selectedColumns.member.4':'albumReleaseDate',
-                'selectedColumns.member.5':'artistAsin',
-                'selectedColumns.member.6':'artistName',
-                'selectedColumns.member.7':'asin',
-                'selectedColumns.member.8':'assetType',
-                'selectedColumns.member.9':'creationDate',
-                'selectedColumns.member.10':'discNum',
-                'selectedColumns.member.11':'duration',
-                'selectedColumns.member.12':'extension',
-                'selectedColumns.member.13':'purchased',
-                'selectedColumns.member.14':'lastUpdatedDate',
-                'selectedColumns.member.15':'name',
-                'selectedColumns.member.16':'objectId',
-                'selectedColumns.member.17':'orderId',
-                'selectedColumns.member.18':'primaryGenre',
-                'selectedColumns.member.19':'purchaseDate',
-                'selectedColumns.member.20':'size',
-                'selectedColumns.member.21':'sortAlbumArtistName',
-                'selectedColumns.member.22':'sortAlbumName',
-                'selectedColumns.member.23':'sortArtistName',
-                'selectedColumns.member.24':'sortTitle',
-                'selectedColumns.member.25':'status',
-                'selectedColumns.member.26':'title',
-                'selectedColumns.member.27':'trackNum',
-                'selectedColumns.member.28':'trackStatus',
-                'selectedColumns.member.29':'payerId',
-                'selectedColumns.member.30':'physicalOrderId',
-                'selectedColumns.member.31':'primeStatus',
-                'selectedColumns.member.32':'purchased',
-                'selectedColumns.member.33':'uploaded',
-                'selectedColumns.member.34':'instantImport',
-                'selectedColumns.member.35':'parentalControls',
-                'selectedColumns.member.36':'albumCoverImageFull',
-                'selectedColumns.member.37':'albumCoverImageLarge',
-                'selectedColumns.member.38':'albumCoverImageMedium',
-                'selectedColumns.member.39':'albumCoverImageSmall',
-                'selectedColumns.member.40':'isMusicSubscription',
-                'sortCriteriaList.member.1.sortColumn':'discNum',
-                'sortCriteriaList.member.1.sortType':'ASC',
-                'sortCriteriaList.member.2.sortColumn':'trackNum',
-                'sortCriteriaList.member.2.sortType':'ASC',
-                'ContentType':'JSON',
-                'customerInfo.customerId':  self.credentials.CUSTOMERID,
-                'customerInfo.deviceId':    self.credentials.DEVICEID,
-                'customerInfo.deviceType':  self.credentials.DEVICETYPE
-            }
+        elif mode == 'getLibraryAlbumTracks':
+            data = self.libraryData(
+                self.LIBRARY_TRACK_ATTRIBUTES,
+                [
+                    self.libraryFilter('status', 'AVAILABLE'),
+                    self.libraryFilter('albumAsin', asin)
+                ],
+                'albumName'
+            )
 
         elif mode == 'getStations':
             data = {

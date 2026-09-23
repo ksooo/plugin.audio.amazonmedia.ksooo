@@ -99,7 +99,7 @@ class AmazonMedia( AMtools ):
                 self.setAddonContent('recentlyplayed',items,'songs')
 
             elif mode == 'getRecentlyAddedSongs':
-                items = self._c.amzCall('APIcirrus','recentlyaddedsongs',None,None,None)['selectTrackMetadataResponse']['selectTrackMetadataResult']
+                items = self._c.amzCall('APIV3getTracks','recentlyaddedsongs',None,None,None)
                 self.setAddonContent('recentlyaddedsongs',items,'songs')
 
             elif mode == 'getPopularPlayLists':
@@ -134,11 +134,10 @@ class AmazonMedia( AMtools ):
                 self.getNewRecomDetails(asin[0])
 
             # get own music, differentiate betwenn purchased and own lib
-            # param: searchReturnType , caller, sortCriteriaList.member.1.sortColumn
             elif mode in ['getPurAlbums','getAllAlbums']:
-                self.getPurchased(['ALBUMS','getAllDataByMetaType','sortAlbumName'],'albums')
+                self.getPurchased('albums')
             elif mode in ['getPurSongs','getAllSongs']:
-                self.getPurchased(['TRACKS','getServerSongs','sortTitle'],'songs')
+                self.getPurchased('songs')
 
             # get amazon stations
             elif mode in ['getStations','getAllArtistsStations','getGenres','getGenres2']:
@@ -185,7 +184,10 @@ class AmazonMedia( AMtools ):
         elif len(data['trackList']) > 0:
             sel = 'trackList'
         else:
-            data = self._c.amzCall( 'APIcirrus', 'itemLookup2ndRound', '/my/albums', [asin], None )['selectTrackMetadataResponse']['selectTrackMetadataResult']
+            tracks = self._c.amzCall( 'APIV3getTracks', 'getLibraryAlbumTracks', None, asin[0], None )['resultList']
+            # A library request cannot be sorted by track number, so the album order is restored here.
+            tracks.sort( key=lambda t: (int(t['metadata'].get('discNum') or 0), int(t['metadata'].get('trackNum') or 0)) )
+            data = {'trackInfoList': tracks}
             sel = 'trackInfoList'
         self.setAddonContent( sel, data[sel], 'songs' )
 
@@ -256,18 +258,17 @@ class AmazonMedia( AMtools ):
             return
         self.setAddonContent( 'newrecom', items, 'albums' )
 
-    def getPurchased( self, mode, ctype ):
+    def getPurchased( self, ctype ):
         """
         Collect purchased Albums and Songs
-        :param array mode:  dynamic API parameter
         :param str ctype:   content type (songs / albums)
         """
-        resp = self._c.amzCall('APIcirrus','getPurchased',None,None,mode)
-        items = resp['searchLibraryResponse']['searchLibraryResult']
         if ctype == 'songs':
-            mode = 'purchasedsongs'
-        elif ctype == 'albums':
-            mode = 'purchasedalbums'
+            items = self._c.amzCall( 'APIV3getTracks', 'getLibrarySongs' )
+            mode  = 'purchasedsongs'
+        else:
+            items = self._c.amzCall( 'APIV3getAlbums', 'getLibraryAlbums' )
+            mode  = 'purchasedalbums'
         self.setAddonContent(mode,items,ctype)
 
     def searchItems( self, mode=None, txt=None, query=None ):
@@ -554,10 +555,10 @@ class AmazonMedia( AMtools ):
                 itemlist.append((url, li, fold))
 
         elif mode == 'recentlyaddedsongs':      # recently added songs
-            for item in param['trackInfoList']:
+            for item in param['resultList']:
                 meta.append(item['metadata']['asin'])
             meta = self._c.amzCall('APIlookup','itemLookup',None,meta,mediatype)['trackList']
-            for item in param['trackInfoList']:
+            for item in param['resultList']:
                 inf, met = self._i.setData(item['metadata'],{'mode':'getTrack'})
                 for i in meta:
                     if item['metadata']['asin'] == i['asin']:
@@ -568,7 +569,7 @@ class AmazonMedia( AMtools ):
                 if not self.showUnplayableSongs and not met['isPlayable']:
                     continue
                 itemlist.append((url, li, False))
-            page, listitem = self._i.addPaginator(param['nextResultsToken'],param['trackInfoList'])
+            page, listitem = self._i.addPaginator(param.get('nextToken'),param['resultList'])
             if page:
                 itemlist.append( listitem )
 
@@ -620,11 +621,11 @@ class AmazonMedia( AMtools ):
                 )
 
         elif mode == 'purchasedalbums':         # purchased and owned albums
-            for item in param['searchReturnItemList']:
-                meta.append(item['metadata']['asin'])
+            for item in param['resultList']:
+                meta.append(item['metadata']['albumAsin'])
             meta = self._c.amzCall('APIlookup','itemLookup',None,meta,['fullAlbumDetails'])['albumList']
 
-            for i in param['searchReturnItemList']:
+            for i in param['resultList']:
                 sortArray.append(i['metadata'])
             sortArray.sort(key=lambda x: x['sortAlbumName'])
 
@@ -637,19 +638,19 @@ class AmazonMedia( AMtools ):
                         continue
                 url, li  = self._i.setItem(inf,met)
                 itemlist.append((url, li, True))
-            page, listitem = self._i.addPaginator(param['nextResultsToken'],param['searchReturnItemList'])
+            page, listitem = self._i.addPaginator(param.get('nextToken'),param['resultList'])
             if page:
                 itemlist.append( listitem )
 
         elif mode == 'purchasedsongs':          # purchased and owned songs
-            meta = self.getMeta(param['searchReturnItemList'],{'array1':'metadata','array2':'albumAsin'})['albumList']
-            for item in param['searchReturnItemList']:
+            meta = self.getMeta(param['resultList'],{'array1':'metadata','array2':'albumAsin'})['albumList']
+            for item in param['resultList']:
                 inf, met = self._i.setData(item['metadata'],{'mode':'getTrack'})
                 url, li  = self._i.setItem(inf,met)
                 if not self.showUnplayableSongs and not met['isPlayable']:
                     continue
                 itemlist.append((url, li, False))
-            page, listitem = self._i.addPaginator(param['nextResultsToken'],param['searchReturnItemList'])
+            page, listitem = self._i.addPaginator(param.get('nextToken'),param['resultList'])
             if page:
                 itemlist.append( listitem )
 
