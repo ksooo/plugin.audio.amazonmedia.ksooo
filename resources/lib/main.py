@@ -6,6 +6,7 @@ from urllib.parse import quote as urlquote
 import os
 import traceback
 import xbmc
+import xbmcgui
 import xbmcplugin
 
 from resources.lib.item import AMitem
@@ -163,7 +164,7 @@ class AmazonMedia( AMtools ):
         except Exception:
             # The credentials stay: a failed request is no indication that they went stale.
             self.log(traceback.format_exc(), xbmc.LOGERROR)
-            xbmc.executebuiltin('Notification("Information", {}, 5000, )'.format(self.getTranslation(30077)))
+            xbmcgui.Dialog().notification(xbmc.getLocalizedString(257), self.getTranslation(30077), xbmcgui.NOTIFICATION_ERROR, 5000)
             xbmcplugin.endOfDirectory(self.G['addonHandle'], False)
 
     # get music information

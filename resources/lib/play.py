@@ -28,7 +28,8 @@ class AMplay( AMtools ):
             xbmc.PlayList(0).clear()
             xbmc.Player().stop()
             reason = {'MAX_CONCURRENCY_REACHED': 30075, 'CONTENT_NOT_ELIGIBLE': 30078}.get(status, 30074)
-            xbmc.executebuiltin('Notification("Information", %s %s, 10000, )'%(self.getTranslation(30073),self.getTranslation(reason)))
+            xbmcgui.Dialog().notification(xbmc.getLocalizedString(257), '{} {}'.format(self.getTranslation(30073), self.getTranslation(reason)),
+                                          xbmcgui.NOTIFICATION_ERROR, 10000)
             return False
         self.writeSongFile( manifest, 'mpd' )
         song = 'http://{}/mpd/{}'.format( self.getSetting('proxy'), 'song.mpd' )
