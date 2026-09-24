@@ -47,6 +47,11 @@ class Menus(AddonTest):
                 AmazonMedia().reqDispatch()
                 self.assertTrue(asked.called or Kodi.items, 'nothing handles this entry')
 
+    def test_the_home_menu_repeats_no_entry_of_the_menus_below_it(self):
+        below = {text(entry['txt']) for name in vars(AMmenu) if name.startswith('menu') and name != 'menuHome'
+                 for entry in getattr(AMmenu, name)()}
+        self.assertEqual({text(entry['txt']) for entry in AMmenu.menuHome()} & below, set())
+
     def test_the_search_dialog_says_what_is_searched_for(self):
         # The menu entry is just "Search"; the dialog has no path above it to tell what for.
         for mode, heading in (('searchPlayLists', 30013), ('searchAlbums', 30010),

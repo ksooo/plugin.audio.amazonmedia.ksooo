@@ -29,10 +29,6 @@ class AMapi():
             s = {   'path':   'muse/getTopMusicEntities',
                     'target': 'com.amazon.musicensembleservice.MusicEnsembleService.getTopMusicEntities'
             }
-        elif amapi == 'APIgetHome':
-            s = {   'path':   'muse/getHome',
-                    'target': 'com.amazon.musicensembleservice.MusicEnsembleService.getHome'
-            }
         # get streaming url
         elif amapi == 'APIstreamDash': # ASIN (musicDashVersionList: ["V1", "V2"])
             s = {   'path':   'dmls/',

@@ -339,20 +339,6 @@ class AMcall( AMtools ):
             }
             data = json.dumps(data)
 
-        elif mode == 'new_recommendations':
-            data = {
-                'deviceId' :            self.credentials.DEVICEID,
-                'deviceType' :          self.credentials.DEVICETYPE,
-                'customerId' :          self.credentials.CUSTOMERID,
-                'musicTerritory' :      self.credentials.MUSICTERRITORY,
-                'lang' :                self.credentials.LOCALE,
-                'requestedContent' :    'PRIME_UPSELL_MS',#,
-                'options' :             ['populateRecentlyPlayed']
-                #'options' :             'requestBundesligaContent'
-            }
-            data = json.dumps(data)
-            #data = json.JSONEncoder().encode(data)
-
         elif mode in ['getLibraryAlbums', 'getLibrarySongs']: # the whole library or only what was bought
             filters = [ self.libraryFilter('status', 'AVAILABLE') ]
             if self.getMode() in ['getPurAlbums', 'getPurSongs']:

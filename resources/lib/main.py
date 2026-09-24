@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from urllib.parse import quote as urlquote
-
 import os
 import traceback
 import xbmc
@@ -117,11 +115,6 @@ class AmazonMedia( AMtools ):
             elif mode == 'getRecomPlayLists':   self.getRecommendations('mp3-prime-browse-carousels_playlistStrategy')
             elif mode == 'getRecomAlbums':      self.getRecommendations('mp3-prime-browse-carousels_mp3PrimeAlbumsStrategy')
 
-            elif mode == 'getNewRecom':         self.getNewRecommendations()
-            elif mode == 'getNewRecomDetails':
-                asin = self.G['addonArgs'].get('target', [None])
-                self.getNewRecomDetails(asin[0])
-
             # get own music, differentiate betwenn purchased and own lib
             elif mode in ['getPurAlbums','getAllAlbums']:
                 self.getPurchased('albums')
@@ -192,41 +185,6 @@ class AmazonMedia( AMtools ):
         elif resp['recommendations'][0]['recommendationType'] == 'ALBUM':
             sel = 'recalbums'
         self.setAddonContent( sel, resp['recommendations'][0], 'albums' )
-
-    def getNewRecommendations( self ):
-        """
-        Collect new recommendations due to API change
-        """
-        menuEntries = []
-        resp = self._c.amzCall( 'APIgetHome', 'new_recommendations' )
-        for item in resp['blocks']:
-            if (('ButtonGrid' in item['__type']) or ('Barker' in item['__type'])):
-                continue
-            menuEntries.append({
-                'txt':      item['title'],
-                'fct':      'getNewRecomDetails',
-                'special':  'newrecom',
-                'target':   urlquote(item['title'].encode('utf8')),
-                'img':      'newrecom.jpg'
-            })
-        self.createList( menuEntries )
-
-    def getNewRecomDetails( self, asin ):
-        """
-        Further recommendation details
-        :param str asin:    unique ID
-        """
-        items = None
-        resp = self._c.amzCall( 'APIgetHome', 'new_recommendations' )
-        for item in resp['blocks']:
-            if (('ButtonGrid' in item['__type']) or ('Barker' in item['__type'])): # ignore button fields
-                continue
-            if asin in item['title']: # find the category
-                items = item['blocks']
-                break
-        if items == None: # in case of empty list
-            return
-        self.setAddonContent( 'newrecom', items, 'albums' )
 
     def getPurchased( self, ctype ):
         """
@@ -439,27 +397,6 @@ class AmazonMedia( AMtools ):
             page, listitem = self._i.addPaginator(param['nextResultsToken'],param['albums'])
             if page:
                 itemlist.append( listitem )
-
-        elif mode == 'newrecom':                # new recommendations
-            for item in param:
-                i = item['hint']['__type']
-                if (('AlbumHint'    in i) or
-                    ('PlaylistHint' in i) or
-                    ('ArtistHint'   in i)):
-                    ctype   = 'albums'
-                    mod     = {'mode':'lookup'}
-                    fold    = True
-                elif 'StationHint' in i:
-                    continue
-                elif 'TrackHint' in i:
-                    ctype   = 'songs'
-                    mod    = {'mode':'getTrack'}
-                    fold    = False
-                inf, met = self._i.setData(item['hint'],mod)
-                url, li  = self._i.setItem(inf,met)
-                if not met['isPlayable'] and (fold or self.hideUnplayableSongs):
-                    continue
-                itemlist.append((url, li, fold))
 
         elif mode == 'recentlyaddedsongs':      # recently added songs
             for item in param['resultList']:

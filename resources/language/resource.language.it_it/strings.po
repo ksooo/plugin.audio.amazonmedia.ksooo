@@ -106,10 +106,6 @@ msgctxt "#30034"
 msgid "Last Search 3: "
 msgstr "Ultima Ricerca 3: "
 
-msgctxt "#30041"
-msgid "Recommendations"
-msgstr "Consigliati"
-
 msgctxt "#30042"
 msgid "Search ..."
 msgstr "Cerca ..."

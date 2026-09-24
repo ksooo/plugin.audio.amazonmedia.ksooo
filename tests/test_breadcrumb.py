@@ -65,12 +65,6 @@ class Breadcrumb(AddonTest):
         self.follow('menuPlaylists')
         self.assertEqual(self.follow('search1PlayLists'), 'Playlists / Last Search 1: jazz')
 
-    def test_the_path_leads_into_a_recommendation(self):
-        self.answer = {'blocks': [{'__type': 'Shoveler', 'title': 'Top Playlists', 'blocks': []}]}
-        self.open('')
-        self.assertEqual(self.follow('getNewRecom'), 'Recommendations')
-        self.assertEqual(self.follow('getNewRecomDetails'), 'Recommendations / Top Playlists')
-
     def test_the_next_page_stays_in_the_folder(self):
         invoke(urlencode({'mode': 'getArtistDetails', 'asin': 'B001RJ93XS',
                           'crumbs': json.dumps(['Artists', 'Search', 'Alphaville'])}))

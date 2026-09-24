@@ -292,10 +292,7 @@ class AMtools( Singleton ):
             isFolder = True
             if dynentry and 'search' in item and self.getSetting(item['search']) == '':
                 continue
-            if 'special' in item and item['special'] == 'newrecom':
-                title = item['txt']
-            else:
-                title = self.getTranslation(item['txt'])
+            title = self.getTranslation(item['txt'])
 
             if dynentry and 'search' in item:
                 title += self.getSetting(item['search'])
@@ -317,8 +314,6 @@ class AMtools( Singleton ):
                     'landscape':url
                 })
             url = '{}?mode={}'.format( self.G['addonBaseUrl'], str(item['fct']) )
-            if 'special' in item and item['special'] == 'newrecom' and 'target' in item:
-                url+='&target={}'.format(str(item['target']))
             url += self.crumbsTo(title)
             itemlist.append((url, li, isFolder))
         self.finalizeContent( self.G['addonHandle'], itemlist, 'albums' )
