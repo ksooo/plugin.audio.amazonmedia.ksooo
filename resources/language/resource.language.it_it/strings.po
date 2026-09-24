@@ -100,11 +100,11 @@ msgstr "Ultima Ricerca 1: "
 
 msgctxt "#30033"
 msgid "Last Search 2: "
-msgstr "Utima Ricerca 2:"
+msgstr "Ultima Ricerca 2: "
 
 msgctxt "#30034"
 msgid "Last Search 3: "
-msgstr "Ultima Ricerca 3:"
+msgstr "Ultima Ricerca 3: "
 
 msgctxt "#30041"
 msgid "Recommendations"
@@ -139,7 +139,7 @@ msgid "Another instance is running."
 msgstr "Another instance is running."
 
 msgctxt "#30076"
-msgid "Credentials successful removed."
+msgid "Credentials successfully removed."
 msgstr "Credentials successful removed."
 
 msgctxt "#30077"
@@ -156,7 +156,7 @@ msgstr "Generale"
 
 msgctxt "#30101"
 msgid "Domain Identifier (DE / UK ...)"
-msgstr "Identificatore Dominio(DE / UK ...)"
+msgstr "Identificatore Dominio (DE / UK ...)"
 
 msgctxt "#30103"
 msgid "Reset Addon"

@@ -5,7 +5,7 @@ import os
 import re
 import unittest
 
-from .support import LANGUAGE_FOLDER, ROOT, SOURCE_LANGUAGE, TRANSLATIONS
+from .support import LANGUAGE_FOLDER, LANGUAGES, ROOT, SOURCE_LANGUAGE, TRANSLATIONS
 
 _ENTRY = re.compile(r'^msgctxt "#(\d+)"\nmsgid (".*")\nmsgstr (".*")$', re.M)
 
@@ -65,6 +65,14 @@ class Languages(unittest.TestCase):
         english = {number: (msgid, msgstr) for number, (msgid, msgstr) in entries('de_de').items()
                    if msgstr in ('""', msgid) and msgstr not in SAME_IN_GERMAN}
         self.assertEqual(english, {})
+
+    def test_a_search_history_label_leaves_room_for_the_search_term(self):
+        # The search term is appended to these labels as it is.
+        for language in LANGUAGES:
+            for number in (30032, 30033, 30034):
+                with self.subTest(language=language, number=number):
+                    msgid, msgstr = entries(language)[number]
+                    self.assertTrue((msgid if msgstr == '""' else msgstr).endswith(' "'))
 
 
 if __name__ == '__main__':

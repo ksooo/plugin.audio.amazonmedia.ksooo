@@ -139,7 +139,7 @@ msgid "Another instance is running."
 msgstr ""
 
 msgctxt "#30076"
-msgid "Credentials successful removed."
+msgid "Credentials successfully removed."
 msgstr ""
 
 msgctxt "#30077"

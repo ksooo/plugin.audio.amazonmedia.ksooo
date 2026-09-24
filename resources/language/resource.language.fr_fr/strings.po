@@ -108,7 +108,7 @@ msgstr "Dernière recherche 3 : "
 
 msgctxt "#30041"
 msgid "Recommendations"
-msgstr "Recommendations"
+msgstr "Recommandations"
 
 msgctxt "#30042"
 msgid "Search ..."
@@ -139,7 +139,7 @@ msgid "Another instance is running."
 msgstr "Another instance is running."
 
 msgctxt "#30076"
-msgid "Credentials successful removed."
+msgid "Credentials successfully removed."
 msgstr "Credentials successful removed."
 
 msgctxt "#30077"
@@ -152,7 +152,7 @@ msgstr "Amazon does not release this title for streaming."
 
 msgctxt "#30100"
 msgid "General"
-msgstr "Géneral"
+msgstr "Général"
 
 msgctxt "#30101"
 msgid "Domain Identifier (DE / UK ...)"

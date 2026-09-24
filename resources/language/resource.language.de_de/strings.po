@@ -139,7 +139,7 @@ msgid "Another instance is running."
 msgstr "Eine andere Instanz läuft bereits."
 
 msgctxt "#30076"
-msgid "Credentials successful removed."
+msgid "Credentials successfully removed."
 msgstr "Benutzerdaten erfolgreich gelöscht."
 
 msgctxt "#30077"
