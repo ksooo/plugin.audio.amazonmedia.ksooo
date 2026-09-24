@@ -39,7 +39,6 @@ class AMtools( Singleton ):
         self.G['maxResults']    = 100
         self.G['logging']       = self.getSetting('logging')
         self.G['showcolentr']   = self.getSetting('showcolentr')
-        self.G['showimages']    = self.getSetting('showimages')
 
     def getUserAgent( self ):
         return self.getSetting('userAgent') or self.defaultUserAgent
@@ -253,7 +252,6 @@ class AMtools( Singleton ):
         data = {
             'userTLD': '0',
             'logging': 'false',
-            'showimages': 'true',
             'hideUnplayableSongs': 'true',
             'showcolentr': 'true',
             'search1PlayLists': '',

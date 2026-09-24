@@ -209,10 +209,7 @@ class AMitem( AMtools ):
         Assign image to the Kodi list item property
         :param str img: link to the image
         """
-        if self.G['showimages']:
-            return ({'icon':img,'thumb':img,'fanart':img,'poster':img,'banner':img,'landscape':img})
-        else:
-            return ({'thumb':img}) # there is a bug in the listitems, after setting multiple arts, setInfo shows the Genre only
+        return ({'icon':img,'thumb':img,'fanart':img,'poster':img,'banner':img,'landscape':img})
 
     def setUrl( self, inf, met ):
         """

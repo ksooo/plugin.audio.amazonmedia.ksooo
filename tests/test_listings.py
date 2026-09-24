@@ -60,6 +60,19 @@ class Playability(AddonTest):
         self.assertEqual(self.searched_songs(), ['Big in Japan', RED % 'An Unavailable Song'])
 
 
+class Artwork(AddonTest):
+    def test_a_listed_album_shows_its_cover_as_background_too(self):
+        cover = 'https://m.media-amazon.com/images/I/cover.jpg'
+        Kodi.settings['search1Albums'] = 'jazz'
+        invoke('mode=search1Albums')
+        self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess()))
+        self.patch(AMcall, 'amzCall', return_value={'results': [{'hits': [{'document': dict(
+            CATALOGUE_TRACK, title='An Album', artFull={'URL': cover})}], 'nextPage': None}]})
+        AmazonMedia().reqDispatch()
+        art = Kodi.items[0][1].art
+        self.assertEqual((art.get('thumb'), art.get('fanart')), (cover, cover))
+
+
 class Amazon:
     """Answers the add-on's requests the way the Amazon Music API does."""
 

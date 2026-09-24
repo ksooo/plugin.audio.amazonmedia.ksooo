@@ -166,10 +166,6 @@ msgctxt "#30104"
 msgid "Activate Logging"
 msgstr "Applikationslog aktivieren"
 
-msgctxt "#30105"
-msgid "Show all Images (reduce Metadata)"
-msgstr "Alle Bilder zeigen (Metadaten reduzieren)"
-
 msgctxt "#30106"
 msgid "Show colored Entries"
 msgstr "Farbige Einträge zeigen"

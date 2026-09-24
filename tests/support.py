@@ -160,9 +160,10 @@ class _ListItem:
     def __init__(self, label='', **kwargs):
         self.label = label
         self.properties = {}
+        self.art = {}
 
     def setArt(self, art):
-        pass
+        self.art.update(art)
 
     def setProperty(self, key, value):
         self.properties[key] = value
