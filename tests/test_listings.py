@@ -60,6 +60,35 @@ class Playability(AddonTest):
         self.assertEqual(self.searched_songs(), ['Big in Japan', RED % 'An Unavailable Song'])
 
 
+class EmptyFolders(AddonTest):
+    # Amazon lists them, but a lookup of one comes back without a single title.
+    def listed(self, query, answer):
+        Kodi.items.clear()
+        invoke(query)
+        self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess(), 'PRIME'))
+        self.patch(AMcall, 'amzCall', return_value=answer)
+        AmazonMedia().reqDispatch()
+        return [li.label for url, li, folder in Kodi.items]
+
+    def recommended_playlists(self):
+        playlists = [dict(CATALOGUE_TRACK, title='A Playlist'), dict(UNAVAILABLE_TRACK, title='An Empty Playlist')]
+        return self.listed('mode=getRecomPlayLists', {'recommendations': [
+            {'recommendationType': 'PLAYLIST', 'playlists': playlists, 'nextResultsToken': None}]})
+
+    def searched_albums(self):
+        Kodi.settings['search1Albums'] = 'jazz'
+        albums = [dict(CATALOGUE_TRACK, title='An Album'), dict(UNAVAILABLE_TRACK, title='An Empty Album')]
+        return self.listed('mode=search1Albums', {'results': [
+            {'hits': [{'document': album} for album in albums], 'nextPage': None}]})
+
+    def test_an_empty_folder_is_left_out_whatever_the_setting(self):
+        for hide in ('true', 'false'):
+            Kodi.settings['hideUnplayableSongs'] = hide
+            with self.subTest(hideUnplayableSongs=hide):
+                self.assertEqual(self.recommended_playlists(), ['A Playlist'])
+                self.assertEqual(self.searched_albums(), ['An Album'])
+
+
 class Artwork(AddonTest):
     def test_a_listed_album_shows_its_cover_as_background_too(self):
         cover = 'https://m.media-amazon.com/images/I/cover.jpg'

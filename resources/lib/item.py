@@ -18,6 +18,9 @@ class AMitem( AMtools ):
         :param array/json param:    Addon mode parameter for the item
         """
         inf, met = self.setData( item, param )
+        if not met['isPlayable']:
+            # Amazon lists such a folder, but hands out nothing in it.
+            return None
         url, li  = self.setItem( inf, met )
         return (url, li, True)
 

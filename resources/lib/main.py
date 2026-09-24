@@ -394,7 +394,7 @@ class AmazonMedia( AMtools ):
             for item in param['playlists']:
                 inf, met = self._i.setData(item,{'mode':'getPlaylistsByIdV2','isList':True})
                 url, li  = self._i.setItem(inf,met)
-                if self.hideUnplayableSongs and not met['isPlayable']:
+                if not met['isPlayable']:
                     continue
                 itemlist.append((url, li, True))
 
@@ -457,7 +457,7 @@ class AmazonMedia( AMtools ):
                     fold    = False
                 inf, met = self._i.setData(item['hint'],mod)
                 url, li  = self._i.setItem(inf,met)
-                if self.hideUnplayableSongs and not met['isPlayable'] and mod['mode'] == 'getTrack':
+                if not met['isPlayable'] and (fold or self.hideUnplayableSongs):
                     continue
                 itemlist.append((url, li, fold))
 
@@ -502,6 +502,8 @@ class AmazonMedia( AMtools ):
                     else:
                         continue
                 url, li  = self._i.setItem(inf,met)
+                if not met['isPlayable']:
+                    continue
                 itemlist.append((url, li, True))
             page, listitem = self._i.addPaginator(param.get('nextToken'),param['resultList'])
             if page:
@@ -529,7 +531,7 @@ class AmazonMedia( AMtools ):
                     fold = False
                 inf, met = self._i.setData(item['document'],mod)
                 url, li  = self._i.setItem(inf,met)
-                if self.hideUnplayableSongs and not met['isPlayable'] and mod['mode'] == 'getTrack':
+                if not met['isPlayable'] and (fold or self.hideUnplayableSongs):
                     continue
                 itemlist.append((url, li, fold))
             try:

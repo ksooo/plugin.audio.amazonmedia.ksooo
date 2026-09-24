@@ -336,6 +336,7 @@ class AMtools( Singleton ):
         :param array itemlist:  Array of list items
         :param str ctype:       Content type ( songs / albums )
         """
+        itemlist = [entry for entry in itemlist if entry]
         xbmcplugin.setPluginCategory(addonHandle, ' / '.join(self.crumbs()))
         xbmcplugin.addDirectoryItems(addonHandle, itemlist, len(itemlist))
         xbmcplugin.setContent(addonHandle, ctype)
