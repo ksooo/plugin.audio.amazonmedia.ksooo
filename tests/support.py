@@ -54,7 +54,7 @@ def text(number):
 def _defaults():
     """The settings as Kodi sets them up from settings.xml for a new install."""
     settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
-    return {setting.get('id'): setting.get('default', '') for setting in settings.iter('setting') if setting.get('id')}
+    return {setting.get('id'): setting.findtext('default') or '' for setting in settings.iter('setting') if setting.get('id')}
 
 
 DEFAULTS = _defaults()

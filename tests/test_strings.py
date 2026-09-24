@@ -69,7 +69,7 @@ class Languages(unittest.TestCase):
         settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
         german = entries('de_de')
         for setting in settings.iter('setting'):
-            if setting.get('type') in ('bool', 'action'):
+            if setting.get('type') in ('boolean', 'action'):
                 label = german[int(setting.get('label'))][1].strip('"')
                 with self.subTest(label=label):
                     self.assertRegex(re.sub(r'\s*\(.*\)$', '', label), r'e[lr]?n$')

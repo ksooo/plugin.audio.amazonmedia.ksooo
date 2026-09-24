@@ -25,5 +25,15 @@ class News(unittest.TestCase):
         self.assertEqual(self.news.splitlines()[0], latest)
 
 
+
+class Settings(unittest.TestCase):
+    def test_the_settings_belong_to_this_add_on(self):
+        addon_id = ElementTree.parse(os.path.join(ROOT, 'addon.xml')).getroot().get('id')
+        settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
+        self.assertEqual(settings.find('section').get('id'), addon_id)
+        for action in settings.iter('data'):
+            with self.subTest(action=action.text):
+                self.assertIn('plugin://%s/' % addon_id, action.text)
+
 if __name__ == '__main__':
     unittest.main()
