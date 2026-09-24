@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.audio.amazonmedia.ksooo"
        name="Amazon Media"
-       version="2.0.0"
+       version="2.1.0"
        provider-name="spacy, Kai Sommerfeld">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
@@ -23,15 +23,13 @@
     <summary lang="en_GB">Unofficial Amazon Music Add-on</summary>
     <description lang="en_GB">Unofficial Kodi Amazon Music Add-on - Kodi extention to browse and play Amazon Music songs. An Amazon account is necessary. Inputstream Adaptiv needs to be activated and the latest widevine verion installed.</description>
     <disclaimer lang="en_GB">Some parts of this addon may not be legal in your country of residence - please check with your local laws before installing. All used images are from Amazon.</disclaimer>
-    <news>v2.0.0
-- Continues spacy's add-on, which is no longer developed, under an own add-on id: you have to sign in once more.
-- Functionality of the old add-on restored (e.g. login works again).
-- Important: Playback needs Kodi for Android; on desktop Amazon refuses the DRM licence.
-- Removed: Stations, genres and the recently played songs. Amazon has withdrawn the services behind them.
-- New: The path to the current folder is shown top left.
-- New: A title Amazon does not stream says so, instead of reporting a missing URL.
-- Translations revised.
-- Several small bug fixes.
+    <news>v2.1.0
+- New: Newly released and popular albums and songs.
+- New: The artists in your personal library.
+- The menus list their entries in the same order. The recommendations are gone from the main menu; Playlists and Albums keep theirs.
+- Playlists and albums that cannot be played are no longer listed.
+- Entries are always marked by colour; the setting for it is gone.
+- Clearer names for the library entries and the sign-in domain.
 </news>
     <assets>
       <icon>resources/icon.png</icon>
