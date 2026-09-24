@@ -177,3 +177,27 @@ msgstr "Nascondi canzoni non riproducibili"
 msgctxt "#30110"
 msgid "Reset Credentials"
 msgstr "Ripristina Credenziali utente"
+
+msgctxt "#30120"
+msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
+msgstr "Il sito Amazon su cui si effettua l'accesso, ad es. IT per amazon.it."
+
+msgctxt "#30121"
+msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."
+msgstr "Nasconde le canzoni che Amazon non trasmette per questo account. Se disattivato, appaiono in rosso."
+
+msgctxt "#30122"
+msgid "Marks entries by colour: gold for purchases, red for titles that cannot be played."
+msgstr "Evidenzia le voci a colori: oro per gli acquisti, rosso per i titoli non riproducibili."
+
+msgctxt "#30123"
+msgid "Writes details of the sign-in and of every request to Amazon to the Kodi log, for troubleshooting. The sign-in pages are also saved in the add-on's data folder."
+msgstr "Scrive nel log di Kodi i dettagli dell'accesso e di ogni richiesta ad Amazon, per la risoluzione dei problemi. Le pagine di accesso vengono inoltre salvate nella cartella dati dell'add-on."
+
+msgctxt "#30124"
+msgid "Resets all settings and deletes the stored sign-in."
+msgstr "Ripristina tutte le impostazioni ed elimina l'accesso salvato."
+
+msgctxt "#30125"
+msgid "Deletes the stored sign-in. You sign in again the next time you open the add-on."
+msgstr "Elimina l'accesso salvato. Alla prossima apertura dell'add-on sarà necessario accedere di nuovo."

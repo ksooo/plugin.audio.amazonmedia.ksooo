@@ -177,3 +177,27 @@ msgstr "Nicht abspielbare Titel ausblenden"
 msgctxt "#30110"
 msgid "Reset Credentials"
 msgstr "Benutzerdaten löschen"
+
+msgctxt "#30120"
+msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
+msgstr "Die Amazon-Seite, bei der die Anmeldung erfolgt, z. B. DE für amazon.de."
+
+msgctxt "#30121"
+msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."
+msgstr "Blendet Titel aus, die Amazon für dieses Konto nicht streamt. Ausgeschaltet erscheinen sie rot."
+
+msgctxt "#30122"
+msgid "Marks entries by colour: gold for purchases, red for titles that cannot be played."
+msgstr "Kennzeichnet Einträge farbig: gold für Gekauftes, rot für nicht abspielbare Titel."
+
+msgctxt "#30123"
+msgid "Writes details of the sign-in and of every request to Amazon to the Kodi log, for troubleshooting. The sign-in pages are also saved in the add-on's data folder."
+msgstr "Schreibt Details zur Anmeldung und zu jeder Anfrage an Amazon ins Kodi-Log, zur Fehlersuche. Die Seiten der Anmeldung werden dazu im Datenordner des Add-ons abgelegt."
+
+msgctxt "#30124"
+msgid "Resets all settings and deletes the stored sign-in."
+msgstr "Setzt alle Einstellungen zurück und löscht die gespeicherte Anmeldung."
+
+msgctxt "#30125"
+msgid "Deletes the stored sign-in. You sign in again the next time you open the add-on."
+msgstr "Löscht die gespeicherte Anmeldung. Beim nächsten Öffnen des Add-ons ist eine neue Anmeldung nötig."

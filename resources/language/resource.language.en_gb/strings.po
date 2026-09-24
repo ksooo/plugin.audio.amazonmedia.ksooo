@@ -177,3 +177,27 @@ msgstr ""
 msgctxt "#30110"
 msgid "Reset Credentials"
 msgstr ""
+
+msgctxt "#30120"
+msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
+msgstr ""
+
+msgctxt "#30121"
+msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."
+msgstr ""
+
+msgctxt "#30122"
+msgid "Marks entries by colour: gold for purchases, red for titles that cannot be played."
+msgstr ""
+
+msgctxt "#30123"
+msgid "Writes details of the sign-in and of every request to Amazon to the Kodi log, for troubleshooting. The sign-in pages are also saved in the add-on's data folder."
+msgstr ""
+
+msgctxt "#30124"
+msgid "Resets all settings and deletes the stored sign-in."
+msgstr ""
+
+msgctxt "#30125"
+msgid "Deletes the stored sign-in. You sign in again the next time you open the add-on."
+msgstr ""

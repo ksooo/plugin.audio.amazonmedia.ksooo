@@ -177,3 +177,27 @@ msgstr "Masquer les titres non jouables"
 msgctxt "#30110"
 msgid "Reset Credentials"
 msgstr "Reset Identifiants de l'utilisateur"
+
+msgctxt "#30120"
+msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
+msgstr "Le site Amazon sur lequel vous vous connectez, p. ex. FR pour amazon.fr."
+
+msgctxt "#30121"
+msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."
+msgstr "Masque les titres qu'Amazon ne diffuse pas pour ce compte. Désactivé, ils apparaissent en rouge."
+
+msgctxt "#30122"
+msgid "Marks entries by colour: gold for purchases, red for titles that cannot be played."
+msgstr "Marque les entrées en couleur : or pour les achats, rouge pour les titres non jouables."
+
+msgctxt "#30123"
+msgid "Writes details of the sign-in and of every request to Amazon to the Kodi log, for troubleshooting. The sign-in pages are also saved in the add-on's data folder."
+msgstr "Écrit dans le journal de Kodi les détails de la connexion et de chaque requête à Amazon, pour le dépannage. Les pages de connexion sont en outre enregistrées dans le dossier de données de l'extension."
+
+msgctxt "#30124"
+msgid "Resets all settings and deletes the stored sign-in."
+msgstr "Réinitialise tous les réglages et supprime la connexion enregistrée."
+
+msgctxt "#30125"
+msgid "Deletes the stored sign-in. You sign in again the next time you open the add-on."
+msgstr "Supprime la connexion enregistrée. Une nouvelle connexion sera nécessaire à la prochaine ouverture de l'extension."

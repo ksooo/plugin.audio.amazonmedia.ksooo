@@ -29,7 +29,7 @@ def ids_in_use():
         with open(path, encoding='utf-8') as handle:
             used.update(int(number) for number in re.findall(r'\b(3\d{4})\b', handle.read()))
     with open(os.path.join(ROOT, 'resources', 'settings.xml'), encoding='utf-8') as handle:
-        used.update(int(number) for number in re.findall(r'label="(3\d{4})"', handle.read()))
+        used.update(int(number) for number in re.findall(r'(?:label|help)="(3\d{4})"', handle.read()))
     return used
 
 

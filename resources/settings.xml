@@ -3,7 +3,7 @@
     <section id="plugin.audio.amazonmedia">
         <category id="general" label="30100">
             <group id="1">
-                <setting id="userTLD" type="integer" label="30101">
+                <setting id="userTLD" type="integer" label="30101" help="30120">
                     <level>0</level>
                     <default>0</default>
                     <constraints>
@@ -19,33 +19,33 @@
                 </setting>
             </group>
             <group id="2">
-                <setting id="hideUnplayableSongs" type="boolean" label="30107">
+                <setting id="hideUnplayableSongs" type="boolean" label="30107" help="30121">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="showcolentr" type="boolean" label="30106">
+                <setting id="showcolentr" type="boolean" label="30106" help="30122">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
             </group>
             <group id="3">
-                <setting id="logging" type="boolean" label="30104">
+                <setting id="logging" type="boolean" label="30104" help="30123">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
             </group>
             <group id="4">
-                <setting id="resetAddon" type="action" label="30103">
+                <setting id="resetAddon" type="action" label="30103" help="30124">
                     <level>0</level>
                     <data>RunPlugin(plugin://plugin.audio.amazonmedia/?mode=resetAddon)</data>
                     <control type="button" format="action">
                         <close>true</close>
                     </control>
                 </setting>
-                <setting id="resetCredentials" type="action" label="30110">
+                <setting id="resetCredentials" type="action" label="30110" help="30125">
                     <level>0</level>
                     <data>RunPlugin(plugin://plugin.audio.amazonmedia/?mode=resetCredentials)</data>
                     <control type="button" format="action">

@@ -27,6 +27,13 @@ class News(unittest.TestCase):
 
 
 class Settings(unittest.TestCase):
+    def test_every_visible_setting_explains_itself(self):
+        settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
+        for setting in settings.iter('setting'):
+            if setting.findtext('visible') != 'false':
+                with self.subTest(setting=setting.get('id')):
+                    self.assertTrue(setting.get('help'))
+
     def test_the_settings_belong_to_this_add_on(self):
         addon_id = ElementTree.parse(os.path.join(ROOT, 'addon.xml')).getroot().get('id')
         settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
