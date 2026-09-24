@@ -76,11 +76,11 @@ msgstr "Canzoni"
 
 msgctxt "#30023"
 msgid "Playlists"
-msgstr "Playlists"
+msgstr "Playlist"
 
 msgctxt "#30024"
 msgid "Albums"
-msgstr "Albums"
+msgstr "Album"
 
 msgctxt "#30027"
 msgid "Artists"
@@ -124,31 +124,31 @@ msgstr "Componente aggiuntivo ripristinato correttamente."
 
 msgctxt "#30072"
 msgid "Captcha required!"
-msgstr "Captcha required!"
+msgstr "Captcha richiesto!"
 
 msgctxt "#30073"
 msgid "Playback not possible!"
-msgstr "Playback not possible!"
+msgstr "Riproduzione impossibile!"
 
 msgctxt "#30074"
 msgid "Cannot find streaming URL."
-msgstr "Cannot find streaming URL."
+msgstr "URL di streaming non trovato."
 
 msgctxt "#30075"
 msgid "Another instance is running."
-msgstr "Another instance is running."
+msgstr "Un'altra istanza è già in esecuzione."
 
 msgctxt "#30076"
 msgid "Credentials successfully removed."
-msgstr "Credentials successful removed."
+msgstr "Credenziali rimosse correttamente."
 
 msgctxt "#30077"
 msgid "Request failed."
-msgstr "Request failed."
+msgstr "Richiesta non riuscita."
 
 msgctxt "#30078"
 msgid "Amazon does not release this title for streaming."
-msgstr "Amazon does not release this title for streaming."
+msgstr "Amazon non rende disponibile questo titolo in streaming."
 
 msgctxt "#30100"
 msgid "General"

@@ -59,10 +59,13 @@ class Languages(unittest.TestCase):
         translated = {number for number, (_, msgstr) in entries(SOURCE_LANGUAGE).items() if msgstr != '""'}
         self.assertEqual(translated, set())
 
-    def test_nothing_is_left_in_english_in_german(self):
-        english = {number: (msgid, msgstr) for number, (msgid, msgstr) in entries('de_de').items()
-                   if msgstr in ('""', msgid)}
-        self.assertEqual(english, {})
+    def test_a_translation_leaves_nothing_in_english(self):
+        # A single word, such as "Albums" in French, may be the same in both languages.
+        for language in TRANSLATIONS:
+            with self.subTest(language=language):
+                english = {number: msgid for number, (msgid, msgstr) in entries(language).items()
+                           if msgstr == '""' or (msgstr == msgid and ' ' in msgid.strip('"'))}
+                self.assertEqual(english, {})
 
     def test_a_german_setting_says_what_it_does_in_the_infinitive(self):
         # "Farbige Einträge zeigen" rather than the imperative "Zeige farbige Einträge".

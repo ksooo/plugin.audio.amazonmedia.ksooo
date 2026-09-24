@@ -120,35 +120,35 @@ msgstr "La connexion n'a pas été possible."
 
 msgctxt "#30071"
 msgid "Addon reset successful."
-msgstr "Réinitialisation de l'addon réussie."
+msgstr "Réinitialisation de l'extension réussie."
 
 msgctxt "#30072"
 msgid "Captcha required!"
-msgstr "Captcha required!"
+msgstr "Captcha requis !"
 
 msgctxt "#30073"
 msgid "Playback not possible!"
-msgstr "Playback not possible!"
+msgstr "Lecture impossible !"
 
 msgctxt "#30074"
 msgid "Cannot find streaming URL."
-msgstr "Cannot find streaming URL."
+msgstr "URL de streaming introuvable."
 
 msgctxt "#30075"
 msgid "Another instance is running."
-msgstr "Another instance is running."
+msgstr "Une autre instance est déjà en cours d'exécution."
 
 msgctxt "#30076"
 msgid "Credentials successfully removed."
-msgstr "Credentials successful removed."
+msgstr "Identifiants supprimés avec succès."
 
 msgctxt "#30077"
 msgid "Request failed."
-msgstr "Request failed."
+msgstr "Échec de la requête."
 
 msgctxt "#30078"
 msgid "Amazon does not release this title for streaming."
-msgstr "Amazon does not release this title for streaming."
+msgstr "Amazon ne propose pas ce titre en streaming."
 
 msgctxt "#30100"
 msgid "General"
@@ -156,11 +156,11 @@ msgstr "Général"
 
 msgctxt "#30101"
 msgid "Domain Identifier (DE / UK ...)"
-msgstr "Domaine d'identification (DE / UK ...)"
+msgstr "Identifiant du domaine (DE / UK ...)"
 
 msgctxt "#30103"
 msgid "Reset Addon"
-msgstr "Reset Addon"
+msgstr "Réinitialiser l'extension"
 
 msgctxt "#30104"
 msgid "Activate Logging"
@@ -176,7 +176,7 @@ msgstr "Masquer les titres non jouables"
 
 msgctxt "#30110"
 msgid "Reset Credentials"
-msgstr "Reset Identifiants de l'utilisateur"
+msgstr "Supprimer les identifiants"
 
 msgctxt "#30120"
 msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
