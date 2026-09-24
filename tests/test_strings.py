@@ -77,6 +77,10 @@ class Languages(unittest.TestCase):
                 with self.subTest(label=label):
                     self.assertRegex(re.sub(r'\s*\(.*\)$', '', label), r'e[lr]?n$')
 
+    def test_german_spells_addon_without_a_hyphen(self):
+        hyphenated = {number: msgstr for number, (_, msgstr) in entries('de_de').items() if 'Add-on' in msgstr}
+        self.assertEqual(hyphenated, {})
+
     def test_a_search_history_label_leaves_room_for_the_search_term(self):
         # The search term is appended to these labels as it is.
         for language in LANGUAGES:
