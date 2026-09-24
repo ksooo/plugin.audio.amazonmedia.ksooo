@@ -89,6 +89,8 @@ class AmazonMedia( AMtools ):
             elif mode == 'getRecentlyAddedSongs':
                 items = self._c.amzCall('APIV3getTracks','recentlyaddedsongs',None,None,None)
                 self.setAddonContent('recentlyaddedsongs',items,'songs')
+                if not items.get('resultList'):
+                    xbmcgui.Dialog().notification(xbmc.getLocalizedString(19033), self.getTranslation(30079), xbmcgui.NOTIFICATION_INFO, 5000)
 
             elif mode == 'getPopularPlayLists':
                 self.getPlayLists('popularity-rank')

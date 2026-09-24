@@ -146,6 +146,10 @@ msgctxt "#30078"
 msgid "Amazon does not release this title for streaming."
 msgstr "Amazon gibt diesen Titel nicht zum Streamen frei."
 
+msgctxt "#30079"
+msgid "No songs were added to the personal library in the last 90 days."
+msgstr "In den letzten 90 Tagen wurden keine Titel zur persönlichen Bibliothek hinzugefügt."
+
 msgctxt "#30100"
 msgid "General"
 msgstr "Allgemein"

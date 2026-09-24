@@ -24,7 +24,7 @@ BASE_URL = 'plugin://{}/'.format(ADDON_ID)
 HANDLE = 1
 
 # The add-on does not ship Kodi's own strings; the few it uses are named here.
-KODI_STRINGS = {257: 'Error'}
+KODI_STRINGS = {257: 'Error', 19033: 'Information'}
 
 LANGUAGE_FOLDER = os.path.join(ROOT, 'resources', 'language')
 SOURCE_LANGUAGE = 'en_gb'

@@ -4,7 +4,7 @@ import json
 import unittest
 from urllib.parse import parse_qs, urlparse
 
-from .support import AddonTest, Kodi, Response, invoke, signed_in
+from .support import AddonTest, Kodi, Response, invoke, signed_in, text
 from resources.lib import amzcall
 from resources.lib.access import AMaccess
 from resources.lib.amzcall import AMcall
@@ -91,6 +91,22 @@ class EmptyFolders(AddonTest):
             with self.subTest(hideUnplayableSongs=hide):
                 self.assertEqual(self.recommended_playlists(), ['A Playlist'])
                 self.assertEqual(self.searched_albums(), ['An Album'])
+
+
+class RecentlyAdded(AddonTest):
+    def told(self, tracks):
+        invoke('mode=getRecentlyAddedSongs')
+        self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess()))
+        self.patch(AMcall, 'amzCall', side_effect=lambda api, *args:
+                   {'resultList': tracks} if api == 'APIV3getTracks' else {'trackList': []})
+        AmazonMedia().reqDispatch()
+        return Kodi.notifications
+
+    def test_an_empty_list_says_nothing_was_added_in_the_last_90_days(self):
+        self.assertEqual(self.told([]), [{'heading': 'Information', 'message': text(30079), 'icon': 'info'}])
+
+    def test_a_list_with_songs_says_nothing(self):
+        self.assertEqual(self.told([{'metadata': dict(PURCHASED_TRACK)}]), [])
 
 
 class Artwork(AddonTest):
