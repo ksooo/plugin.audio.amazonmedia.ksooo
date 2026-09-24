@@ -23,11 +23,11 @@ msgid "Recommendations"
 msgstr ""
 
 msgctxt "#30006"
-msgid "Owned"
+msgid "Personal Library"
 msgstr ""
 
 msgctxt "#30007"
-msgid "Owned"
+msgid "Personal Library"
 msgstr ""
 
 msgctxt "#30009"
@@ -67,7 +67,7 @@ msgid "Next Page"
 msgstr ""
 
 msgctxt "#30021"
-msgid "Recently Added"
+msgid "Recently Added to Personal Library"
 msgstr ""
 
 msgctxt "#30022"

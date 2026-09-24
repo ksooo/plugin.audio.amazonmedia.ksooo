@@ -23,12 +23,12 @@ msgid "Recommendations"
 msgstr "Empfehlungen"
 
 msgctxt "#30006"
-msgid "Owned"
-msgstr "Eigene"
+msgid "Personal Library"
+msgstr "Persönliche Bibliothek"
 
 msgctxt "#30007"
-msgid "Owned"
-msgstr "Eigene"
+msgid "Personal Library"
+msgstr "Persönliche Bibliothek"
 
 msgctxt "#30009"
 msgid "Purchased"
@@ -67,8 +67,8 @@ msgid "Next Page"
 msgstr "Nächste Seite"
 
 msgctxt "#30021"
-msgid "Recently Added"
-msgstr "Zuletzt hinzugefügt"
+msgid "Recently Added to Personal Library"
+msgstr "Kürzlich zur persönlichen Bibliothek hinzugefügt"
 
 msgctxt "#30022"
 msgid "Songs"
