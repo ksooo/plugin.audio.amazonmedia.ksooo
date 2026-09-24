@@ -35,6 +35,8 @@ class AMmenu():
                 {'txt':30033,'fct':'search2Albums',         'img':'search.png','search':'search2Albums'},
                 {'txt':30034,'fct':'search3Albums',         'img':'search.png','search':'search3Albums'},
                 {'txt':30004,'fct':'getRecomAlbums',        'img':'albums.jpg'},
+                {'txt':30002,'fct':'getNewAlbums',          'img':'albums.jpg'},
+                {'txt':30001,'fct':'getPopularAlbums',      'img':'albums.jpg'},
                 {'txt':30012,'fct':'getPurAlbums',          'img':'albums.jpg'},
                 {'txt':30007,'fct':'getAllAlbums',          'img':'albums.jpg'}]
 
@@ -44,6 +46,8 @@ class AMmenu():
                 {'txt':30032,'fct':'search1Songs',          'img':'search.png','search':'search1Songs'},
                 {'txt':30033,'fct':'search2Songs',          'img':'search.png','search':'search2Songs'},
                 {'txt':30034,'fct':'search3Songs',          'img':'search.png','search':'search3Songs'},
+                {'txt':30002,'fct':'getNewSongs',           'img':'songs.jpg'},
+                {'txt':30001,'fct':'getPopularSongs',       'img':'songs.jpg'},
                 {'txt':30009,'fct':'getPurSongs',           'img':'songs.jpg'},
                 {'txt':30006,'fct':'getAllSongs',           'img':'songs.jpg'},
                 {'txt':30021,'fct':'getRecentlyAddedSongs', 'img':'songs.jpg'}]
@@ -53,4 +57,5 @@ class AMmenu():
         return [{'txt':30042,'fct':'searchArtist',          'img':'search.png'},
                 {'txt':30032,'fct':'search1Artists',        'img':'search.png','search':'search1Artists'},
                 {'txt':30033,'fct':'search2Artists',        'img':'search.png','search':'search2Artists'},
-                {'txt':30034,'fct':'search3Artists',        'img':'search.png','search':'search3Artists'}]
+                {'txt':30034,'fct':'search3Artists',        'img':'search.png','search':'search3Artists'},
+                {'txt':30006,'fct':'getLibraryArtists',     'img':'artists.jpg'}]

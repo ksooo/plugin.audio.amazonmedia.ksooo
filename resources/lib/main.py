@@ -92,11 +92,21 @@ class AmazonMedia( AMtools ):
                 if not items.get('resultList'):
                     xbmcgui.Dialog().notification(xbmc.getLocalizedString(19033), self.getTranslation(30079), xbmcgui.NOTIFICATION_INFO, 5000)
 
-            elif mode == 'getPopularPlayLists':
-                self.getPlayLists('popularity-rank')
+            elif mode == 'getPopularPlayLists': self.getTopEntities('playlist', 'popularity-rank')
+            elif mode == 'getNewPlayLists':     self.getTopEntities('playlist', 'newly-released')
+            elif mode == 'getPopularAlbums':    self.getTopEntities('album', 'popularity-rank')
+            elif mode == 'getNewAlbums':        self.getTopEntities('album', 'newly-released')
+            elif mode == 'getPopularSongs':     self.getTopEntities('track', 'popularity-rank')
+            elif mode == 'getNewSongs':         self.getTopEntities('track', 'newly-released')
 
-            elif mode == 'getNewPlayLists':
-                self.getPlayLists('newly-released')
+            elif mode == 'getLibraryArtists':
+                items = self._c.amzCall('APIV3getArtists','libraryartists')
+                self.setAddonContent('libraryartists',items,'artists')
+
+            elif mode == 'getLibraryArtistSongs':
+                artist = self.G['addonArgs'].get('artist', [None])[0]
+                items = self._c.amzCall('APIV3getTracks','libraryartisttracks',None,artist)
+                self.setAddonContent('purchasedsongs',items,'songs')
 
             elif mode == 'getFollowedPlayLists':
                 items = self._c.amzCall('APIgetFollowedPlaylistsInLibrary','followedplaylists',None,None,None)
@@ -166,14 +176,17 @@ class AmazonMedia( AMtools ):
             sel = 'trackInfoList'
         self.setAddonContent( sel, data[sel], 'songs' )
 
-    def getPlayLists( self, mediatype ):
+    def getTopEntities( self, kind, rank ):
         """
-        Collect Playlist information
-        :param str mediatype:   dynamic API parameter
+        Collect the popular or newly released playlists, albums or songs
+        :param str kind:    playlist, album or track
+        :param str rank:    popularity-rank or newly-released
         """
-        items = self._c.amzCall( 'APIgetTopMusicEntities', 'playlist', None, None, mediatype )
+        items = self._c.amzCall( 'APIgetTopMusicEntities', kind, None, None, rank )
         # data structure is similar to lookup
-        self.setAddonContent( 'playlists', items, 'albums' )
+        if   kind == 'playlist':    self.setAddonContent( 'playlists', items, 'albums' )
+        elif kind == 'album':       self.setAddonContent( 'topalbums', items, 'albums' )
+        else:                       self.setAddonContent( 'toptracks', items, 'songs' )
 
     def getRecommendations( self, mediatype ):
         """
@@ -338,6 +351,38 @@ class AmazonMedia( AMtools ):
                     self._i.setListItem(i,{'mode':'lookup','isList':True})
                 )
             page, listitem = self._i.addPaginator(param['nextTokenMap']['playlist'],param['playlistList'])
+            if page:
+                itemlist.append( listitem )
+
+        elif mode == 'topalbums':               # popular or newly released albums
+            for item in param['albumList']:
+                itemlist.append(
+                    self._i.setListItem(item,{'mode':'lookup','isAlbumFolder':True,'isList':True})
+                )
+            page, listitem = self._i.addPaginator(param['nextTokenMap']['album'],param['albumList'])
+            if page:
+                itemlist.append( listitem )
+
+        elif mode == 'toptracks':               # popular or newly released songs
+            for item in param['trackList']:
+                inf, met = self._i.setData(item,{'mode':'getTrack'})
+                url, li  = self._i.setItem(inf,met)
+                if self.hideUnplayableSongs and not met['isPlayable']:
+                    continue
+                itemlist.append((url, li, False))
+            page, listitem = self._i.addPaginator(param['nextTokenMap']['track'],param['trackList'])
+            if page:
+                itemlist.append( listitem )
+
+        elif mode == 'libraryartists':          # artists in the personal library
+            for item in param['resultList']:
+                artist = dict(item['metadata'], title=item['metadata']['artistName'], trackCount=item['numTracks'])
+                inf, met = self._i.setData(artist,{'mode':'getLibraryArtistSongs','isList':True})
+                # The library does not flag what it holds as streamable; what it lists can be opened.
+                met['isPlayable'], met['color'] = True, '%s'
+                url, li  = self._i.setItem(inf,met)
+                itemlist.append((url, li, True))
+            page, listitem = self._i.addPaginator(param.get('nextToken'),param['resultList'])
             if page:
                 itemlist.append( listitem )
 

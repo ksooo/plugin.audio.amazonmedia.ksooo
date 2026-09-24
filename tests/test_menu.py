@@ -52,6 +52,15 @@ class Menus(AddonTest):
                  for entry in getattr(AMmenu, name)()}
         self.assertEqual({text(entry['txt']) for entry in AMmenu.menuHome()} & below, set())
 
+    def test_the_menus_below_it_list_what_they_share_in_the_same_order(self):
+        menus = [[text(entry['txt']) for entry in getattr(AMmenu, name)()]
+                 for name in sorted(vars(AMmenu)) if name.startswith('menu') and name != 'menuHome']
+        for first in menus:
+            for second in menus:
+                with self.subTest(first=first, second=second):
+                    self.assertEqual([label for label in first if label in second],
+                                     [label for label in second if label in first])
+
     def test_the_search_dialog_says_what_is_searched_for(self):
         # The menu entry is just "Search"; the dialog has no path above it to tell what for.
         for mode, heading in (('searchPlayLists', 30013), ('searchAlbums', 30010),

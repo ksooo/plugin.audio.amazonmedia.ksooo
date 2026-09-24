@@ -4,7 +4,7 @@ import json
 import unittest
 from urllib.parse import parse_qs, urlparse
 
-from .support import AddonTest, Kodi, Response, invoke, signed_in, text
+from .support import AddonTest, Kodi, Response, clicked, invoke, signed_in, text
 from resources.lib import amzcall
 from resources.lib.access import AMaccess
 from resources.lib.amzcall import AMcall
@@ -107,6 +107,38 @@ class RecentlyAdded(AddonTest):
 
     def test_a_list_with_songs_says_nothing(self):
         self.assertEqual(self.told([{'metadata': dict(PURCHASED_TRACK)}]), [])
+
+
+class Charts(AddonTest):
+    def listed(self, query, answer):
+        invoke(query)
+        self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess()))
+        self.patch(AMcall, 'amzCall', return_value=answer)
+        AmazonMedia().reqDispatch()
+        return [(li.label, parse_qs(urlparse(url).query)['mode'][0], folder) for url, li, folder in Kodi.items]
+
+    def test_a_charted_album_opens(self):
+        album = dict(CATALOGUE_TRACK, title='An Album', artist={'name': 'An Artist'})
+        self.assertEqual(self.listed('mode=getPopularAlbums', {'albumList': [album], 'nextTokenMap': {'album': None}}),
+                         [('An Album', 'lookup', True)])
+
+    def test_a_charted_song_plays(self):
+        self.assertEqual(self.listed('mode=getNewSongs', {'trackList': [dict(CATALOGUE_TRACK)], 'nextTokenMap': {'track': None}}),
+                         [('Big in Japan', 'getTrack', False)])
+
+
+class LibraryArtists(AddonTest):
+    def test_an_artist_of_the_library_opens_its_songs_in_the_library(self):
+        # The library lists an artist without saying whether anything of it can be streamed.
+        invoke('mode=getLibraryArtists')
+        self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess()))
+        self.patch(AMcall, 'amzCall', return_value={'resultList': [{'metadata': {
+            'artistName': 'An Artist', 'artistAsin': 'B0ANARTIST', 'objectId': 'object-id'}, 'numTracks': 3}]})
+        AmazonMedia().reqDispatch()
+        url, li, folder = Kodi.items[0]
+        query = parse_qs(clicked(url))
+        self.assertEqual((li.label, folder, query['mode'], query['artist']),
+                         ('An Artist  (3 Hits)', True, ['getLibraryArtistSongs'], ['An Artist']))
 
 
 class Artwork(AddonTest):

@@ -269,6 +269,20 @@ class AMcall( AMtools ):
                 'creationDate', 'DESC', paged=True
             )
 
+        elif mode == 'libraryartists':
+            data = self.libraryData(
+                ['artistName', 'artistAsin', 'objectId'],
+                [ self.libraryFilter('status', 'AVAILABLE') ],
+                'artistName', paged=True
+            )
+
+        elif mode == 'libraryartisttracks':
+            data = self.libraryData(
+                self.LIBRARY_TRACK_ATTRIBUTES,
+                [ self.libraryFilter('status', 'AVAILABLE'), self.libraryFilter('artistName', asin) ],
+                'albumName', paged=True
+            )
+
         elif mode == 'followedplaylists':
             data = {
                 'optIntoSharedPlaylists': 'true',
@@ -303,13 +317,13 @@ class AMcall( AMtools ):
             }
             data = json.dumps(data)
 
-        elif mode == 'playlist':
+        elif mode in ['playlist', 'album', 'track']:
             data  = {
                 'rankType':         mediatype,
                 'requestedContent': 'MUSIC_SUBSCRIPTION',
                 'features':         ['playlistLibraryAvailability','collectionLibraryAvailability'],
-                'types':            ['playlist'],
-                'nextTokenMap':     {'playlist' : token[0]},
+                'types':            [mode],
+                'nextTokenMap':     {mode : token[0]},
                 'maxCount':         self.G['maxResults'],
                 'lang':             self.credentials.LOCALE,
                 'deviceId':         self.credentials.DEVICEID,

@@ -52,6 +52,10 @@ class AMapi():
             s = {   'path':   'cirrus/v3/',
                     'target': 'com.amazon.cirrus.libraryservice.v3.CirrusLibraryServiceExternalV3.getAlbums'
             }
+        elif amapi == 'APIV3getArtists':
+            s = {   'path':   'cirrus/v3/',
+                    'target': 'com.amazon.cirrus.libraryservice.v3.CirrusLibraryServiceExternalV3.getArtists'
+            }
         elif amapi == 'APIgetPlaylistsByIdV2':
             s = {   'path':   'playlists/',
                     'target': 'com.amazon.musicplaylist.model.MusicPlaylistService.getPlaylistsByIdV2'

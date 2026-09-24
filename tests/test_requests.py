@@ -45,6 +45,13 @@ class Catalogue(Requests):
         invoke('mode=getPopularPlayLists')
         self.assertEqual(self.body('playlist', mediatype='popularity-rank')['requestedContent'], 'MUSIC_SUBSCRIPTION')
 
+    def test_a_chart_asks_for_the_kind_it_lists(self):
+        for kind, query in (('playlist', 'mode=getNewPlayLists'), ('album', 'mode=getNewAlbums'), ('track', 'mode=getNewSongs')):
+            with self.subTest(kind=kind):
+                invoke(query)
+                body = self.body(kind, mediatype='newly-released')
+                self.assertEqual((body['types'], list(body['nextTokenMap'])), ([kind], [kind]))
+
 
 class Library(Requests):
     def library_requests(self):
@@ -53,6 +60,8 @@ class Library(Requests):
                                   ('getLibrarySongs', 'mode=getPurSongs', None),
                                   ('getLibrarySongs', 'mode=getAllSongs', None),
                                   ('recentlyaddedsongs', 'mode=getRecentlyAddedSongs', None),
+                                  ('libraryartists', 'mode=getLibraryArtists', None),
+                                  ('libraryartisttracks', 'mode=getLibraryArtistSongs&artist=An%20Artist', 'An Artist'),
                                   ('getLibraryAlbumTracks', 'mode=lookup&asin=B0LIBALBUM', 'B0LIBALBUM')):
             invoke(query)
             yield query, self.body(mode, asin)
@@ -73,6 +82,12 @@ class Library(Requests):
     def test_purchased_lists_keep_to_what_was_bought(self):
         self.assertEqual(self.filters('mode=getPurAlbums', 'getLibraryAlbums').get('purchased'), 'true')
         self.assertEqual(self.filters('mode=getPurSongs', 'getLibrarySongs').get('purchased'), 'true')
+
+    def test_the_songs_of_a_library_artist_are_asked_for_by_name(self):
+        # Amazon refuses to filter the library by artistAsin.
+        invoke('mode=getLibraryArtistSongs&artist=An%20Artist')
+        filters = {f['attributeName']: f['attributeValue'] for f in self.body('libraryartisttracks', 'An Artist')['filterList']}
+        self.assertEqual(filters.get('artistName'), 'An Artist')
 
     def test_the_whole_library_is_not_limited_to_purchases(self):
         self.assertNotIn('purchased', self.filters('mode=getAllAlbums', 'getLibraryAlbums'))
