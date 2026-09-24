@@ -175,8 +175,8 @@ msgid "Show colored Entries"
 msgstr "Farbige Einträge zeigen"
 
 msgctxt "#30107"
-msgid "Show unplayable Songs"
-msgstr "Nicht abspielbare Titel zeigen"
+msgid "Hide unplayable Songs"
+msgstr "Nicht abspielbare Titel ausblenden"
 
 msgctxt "#30110"
 msgid "Reset Credentials"

@@ -254,7 +254,7 @@ class AMtools( Singleton ):
             'userTLD': '0',
             'logging': 'false',
             'showimages': 'true',
-            'showUnplayableSongs': 'false',
+            'hideUnplayableSongs': 'true',
             'showcolentr': 'true',
             'search1PlayLists': '',
             'search2PlayLists': '',

@@ -12,6 +12,7 @@ import sys
 import tempfile
 import types
 import unittest
+import xml.etree.ElementTree as ElementTree
 from unittest import mock
 from urllib.parse import parse_qsl, quote, urlencode, urlparse
 
@@ -48,6 +49,15 @@ ENGLISH = _english()
 def text(number):
     """What Kodi shows for one of the add-on's strings."""
     return ENGLISH[number]
+
+
+def _defaults():
+    """The settings as Kodi sets them up from settings.xml for a new install."""
+    settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
+    return {setting.get('id'): setting.get('default', '') for setting in settings.iter('setting') if setting.get('id')}
+
+
+DEFAULTS = _defaults()
 
 
 class Kodi:
@@ -293,8 +303,7 @@ class AddonTest(unittest.TestCase):
 
     def setUp(self):
         Kodi.profile = tempfile.mkdtemp()
-        Kodi.settings = {'userTLD': '0', 'logging': 'false', 'showcolentr': 'true',
-                         'showimages': 'true', 'showUnplayableSongs': 'false'}
+        Kodi.settings = dict(DEFAULTS)
         for record in (Kodi.log, Kodi.builtins, Kodi.notifications, Kodi.progress,
                        Kodi.directories, Kodi.items):
             del record[:]

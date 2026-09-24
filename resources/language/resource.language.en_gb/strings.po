@@ -175,7 +175,7 @@ msgid "Show colored Entries"
 msgstr ""
 
 msgctxt "#30107"
-msgid "Show unplayable Songs"
+msgid "Hide unplayable Songs"
 msgstr ""
 
 msgctxt "#30110"

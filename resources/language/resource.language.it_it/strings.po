@@ -175,8 +175,8 @@ msgid "Show colored Entries"
 msgstr "Mostra Voci colorate"
 
 msgctxt "#30107"
-msgid "Show unplayable Songs"
-msgstr "Mostra canzoni non riproducibili"
+msgid "Hide unplayable Songs"
+msgstr "Nascondi canzoni non riproducibili"
 
 msgctxt "#30110"
 msgid "Reset Credentials"

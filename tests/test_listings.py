@@ -40,14 +40,24 @@ class Playability(AddonTest):
     def test_a_title_outside_the_catalogue_is_unplayable_and_red(self):
         self.assertEqual(self.marked(UNAVAILABLE_TRACK, 'PRIME'), (False, RED))
 
-    def test_a_prime_account_finds_the_catalogue_in_a_song_search(self):
+    def searched_songs(self):
         Kodi.settings['search1Songs'] = 'jazz'
         invoke('mode=search1Songs')
         self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess(), 'PRIME'))
         self.patch(AMcall, 'amzCall', return_value={'results': [{
             'hits': [{'document': dict(CATALOGUE_TRACK)}, {'document': dict(UNAVAILABLE_TRACK)}], 'nextPage': None}]})
         AmazonMedia().reqDispatch()
-        self.assertEqual([li.label for url, li, folder in Kodi.items], ['Big in Japan'])
+        return [li.label for url, li, folder in Kodi.items]
+
+    def test_a_prime_account_finds_the_catalogue_in_a_song_search(self):
+        self.assertIn('Big in Japan', self.searched_songs())
+
+    def test_unplayable_songs_are_hidden_by_default(self):
+        self.assertEqual(self.searched_songs(), ['Big in Japan'])
+
+    def test_unplayable_songs_are_listed_when_the_setting_is_off(self):
+        Kodi.settings['hideUnplayableSongs'] = 'false'
+        self.assertEqual(self.searched_songs(), ['Big in Japan', RED % 'An Unavailable Song'])
 
 
 class Amazon:
