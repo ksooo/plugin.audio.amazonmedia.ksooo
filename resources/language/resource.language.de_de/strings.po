@@ -155,8 +155,8 @@ msgid "General"
 msgstr "Allgemein"
 
 msgctxt "#30101"
-msgid "Domain Identifier (DE / UK ...)"
-msgstr "Domainkennung (DE / UK ...)"
+msgid "Sign-in domain"
+msgstr "Anmeldedomäne"
 
 msgctxt "#30103"
 msgid "Reset Addon"
@@ -175,8 +175,8 @@ msgid "Reset Credentials"
 msgstr "Benutzerdaten löschen"
 
 msgctxt "#30120"
-msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
-msgstr "Die Amazon-Seite, bei der die Anmeldung erfolgt, z. B. DE für amazon.de."
+msgid "The Amazon site your account is registered with, e.g. DE for amazon.de. Signing in starts there."
+msgstr "Die Amazon-Seite, bei der das Konto geführt wird, z. B. DE für amazon.de. Dort beginnt die Anmeldung."
 
 msgctxt "#30121"
 msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."

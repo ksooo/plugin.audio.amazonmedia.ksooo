@@ -155,7 +155,7 @@ msgid "General"
 msgstr ""
 
 msgctxt "#30101"
-msgid "Domain Identifier (DE / UK ...)"
+msgid "Sign-in domain"
 msgstr ""
 
 msgctxt "#30103"
@@ -175,7 +175,7 @@ msgid "Reset Credentials"
 msgstr ""
 
 msgctxt "#30120"
-msgid "The Amazon site you sign in at, e.g. DE for amazon.de."
+msgid "The Amazon site your account is registered with, e.g. DE for amazon.de. Signing in starts there."
 msgstr ""
 
 msgctxt "#30121"
