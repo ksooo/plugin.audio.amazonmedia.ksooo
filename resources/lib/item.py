@@ -170,6 +170,8 @@ class AMitem( AMtools ):
                 meta['color'] = '[COLOR red]%s[/COLOR]'
 
         if 'isList' in filter and filter['isList'] and info['tracknumber'] is not None:
+            # The breadcrumb takes the plain title, without the counts added here.
+            meta['name'] = info['title']
             info['title'] =  '{}  ({} Hits'.format(info['title'],info['tracknumber'])
             if info['duration'] is not None:
                 info['title'] =  '{} - {}'.format(info['title'],datetime.timedelta(seconds=info['duration']))
@@ -233,7 +235,10 @@ class AMitem( AMtools ):
         if inf['tracknumber'] is not None:  url['tracknumber']  = inf['tracknumber']
         #if met['thumb'] is not None:        url['art']          = met['thumb']
 
-        return '{}?{}'.format(self.G['addonBaseUrl'],urlencode(url))
+        url = '{}?{}'.format(self.G['addonBaseUrl'],urlencode(url))
+        if met['mode'] != 'getTrack':
+            url += self.crumbsTo(met.get('name', inf['title']))
+        return url
 
     def addPaginator( self, resultToken, resultLen ):
         """
@@ -260,4 +265,5 @@ class AMitem( AMtools ):
             url += "&query={}".format( urlquoteplus( query.encode("utf8") ) )
         if asin:
             url += "&asin={}".format( urlquoteplus( asin.encode("utf8") ) )
+        url += self.crumbsTo()
         return (url, li, True)

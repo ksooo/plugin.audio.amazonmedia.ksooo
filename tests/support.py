@@ -13,6 +13,7 @@ import tempfile
 import types
 import unittest
 from unittest import mock
+from urllib.parse import parse_qsl, quote, urlencode, urlparse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -59,6 +60,7 @@ class Kodi:
     progress = []
     directories = []
     items = []
+    category = None
     typed = ''
     on_wait_for_abort = None
 
@@ -189,6 +191,7 @@ xbmcplugin.endOfDirectory = lambda handle, succeeded=True, *args, **kwargs: \
     Kodi.directories.append((handle, succeeded))
 xbmcplugin.addDirectoryItems = lambda handle, items, total=0: Kodi.items.extend(items)
 xbmcplugin.setContent = lambda handle, content: None
+xbmcplugin.setPluginCategory = lambda handle, category: setattr(Kodi, 'category', category)
 xbmcplugin.setResolvedUrl = lambda handle, succeeded, item: None
 
 # xbmcvfs
@@ -250,6 +253,16 @@ def invoke(query=''):
     sys.argv = [BASE_URL, str(HANDLE), '?' + query]
 
 
+def clicked(url):
+    """The query Kodi hands the plugin when a listed URL is opened.
+
+    Kodi keeps the options of a plugin URL in a std::map: one value per key,
+    sorted by key, and encodes them anew.
+    """
+    options = dict(parse_qsl(urlparse(url).query, keep_blank_values=True))
+    return urlencode(sorted(options.items()), quote_via=quote)
+
+
 def signed_in(credentials, tier='PRIME'):
     """Fill the credentials as a successful sign-in on amazon.de leaves them."""
     credentials.ACCESSTOKEN = 'Bearer access-token'
@@ -285,6 +298,7 @@ class AddonTest(unittest.TestCase):
                        Kodi.directories, Kodi.items):
             del record[:]
         Kodi.typed = ''
+        Kodi.category = None
         Kodi.on_wait_for_abort = None
         invoke()
 

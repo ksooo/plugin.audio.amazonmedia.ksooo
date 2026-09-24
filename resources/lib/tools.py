@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys, os, pickle
+import sys, os, pickle, json
 import urllib.parse as urlparse
 import xbmc, xbmcgui, xbmcaddon, xbmcvfs, xbmcplugin
 from resources.lib.access import AMaccess
@@ -323,6 +323,7 @@ class AMtools( Singleton ):
             url = '{}?mode={}'.format( self.G['addonBaseUrl'], str(item['fct']) )
             if 'special' in item and item['special'] == 'newrecom' and 'target' in item:
                 url+='&target={}'.format(str(item['target']))
+            url += self.crumbsTo(title)
             itemlist.append((url, li, isFolder))
         self.finalizeContent( self.G['addonHandle'], itemlist, 'albums' )
 
@@ -330,17 +331,32 @@ class AMtools( Singleton ):
         info_tag = ListItemInfoTag(listItem, tag_type)
         return info_tag
 
-    @staticmethod
-    def finalizeContent( addonHandle, itemlist, ctype ):
+    def finalizeContent( self, addonHandle, itemlist, ctype ):
         """
         Finalization of Kodi list items
         :param str addonHandle: Kodi addon handle
         :param array itemlist:  Array of list items
         :param str ctype:       Content type ( songs / albums )
         """
+        xbmcplugin.setPluginCategory(addonHandle, ' / '.join(self.crumbs()))
         xbmcplugin.addDirectoryItems(addonHandle, itemlist, len(itemlist))
         xbmcplugin.setContent(addonHandle, ctype)
         xbmcplugin.endOfDirectory(addonHandle)
+
+    def crumbs( self ):
+        """
+        The folders from the main menu down to the one being listed
+        """
+        return json.loads(self.G['addonArgs'].get('crumbs', ['[]'])[0])
+
+    def crumbsTo( self, name=None ):
+        """
+        URL parameter that carries the path from the main menu into a folder
+        :param str name:    label of the folder, None to stay in this one (next page)
+        """
+        crumbs = self.crumbs() + ([name] if name else [])
+        # A single parameter, since Kodi keeps just one value per key of a plugin URL.
+        return '&' + urlparse.urlencode({'crumbs': json.dumps(crumbs)}) if crumbs else ''
 
     def prepReqHeader( self, amzTarget ):
         """
