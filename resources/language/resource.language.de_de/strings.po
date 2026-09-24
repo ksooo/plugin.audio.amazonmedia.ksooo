@@ -166,10 +166,6 @@ msgctxt "#30104"
 msgid "Activate Logging"
 msgstr "Applikationslog aktivieren"
 
-msgctxt "#30106"
-msgid "Show colored Entries"
-msgstr "Farbige Einträge zeigen"
-
 msgctxt "#30107"
 msgid "Hide unplayable Songs"
 msgstr "Nicht abspielbare Titel ausblenden"
@@ -185,11 +181,6 @@ msgstr "Die Amazon-Seite, bei der die Anmeldung erfolgt, z. B. DE für amazon.de
 msgctxt "#30121"
 msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."
 msgstr "Blendet Titel aus, die Amazon für dieses Konto nicht streamt. Ausgeschaltet erscheinen sie rot."
-
-msgctxt "#30122"
-msgid "Marks entries by colour: gold for purchases, red for titles that cannot be played."
-msgstr "Kennzeichnet Einträge farbig: gold für Gekauftes, rot für nicht abspielbare Titel."
-
 msgctxt "#30123"
 msgid "Writes details of the sign-in and of every request to Amazon to the Kodi log, for troubleshooting. The sign-in pages are also saved in the add-on's data folder."
 msgstr "Schreibt Details zur Anmeldung und zu jeder Anfrage an Amazon ins Kodi-Log, zur Fehlersuche. Die Seiten der Anmeldung werden dazu im Datenordner des Add-ons abgelegt."

@@ -38,7 +38,6 @@ class AMtools( Singleton ):
         self.G['audioQuality']  = 'HIGH'
         self.G['maxResults']    = 100
         self.G['logging']       = self.getSetting('logging')
-        self.G['showcolentr']   = self.getSetting('showcolentr')
 
     def getUserAgent( self ):
         return self.getSetting('userAgent') or self.defaultUserAgent
@@ -253,7 +252,6 @@ class AMtools( Singleton ):
             'userTLD': '0',
             'logging': 'false',
             'hideUnplayableSongs': 'true',
-            'showcolentr': 'true',
             'search1PlayLists': '',
             'search2PlayLists': '',
             'search3PlayLists': '',

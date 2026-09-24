@@ -167,13 +167,12 @@ class AMitem( AMtools ):
         # just as it does to a subscription, so the account tier does not decide any more.
         meta['isPlayable'] = bool(meta['purchased'] or meta['isPrime'] or meta['isUnlimited'])
 
-        if self.G['showcolentr']:
-            if meta['purchased']:
-                meta['color'] = '[COLOR gold]%s[/COLOR]'
-            elif meta['isPlayable']:
-                meta['color'] = '%s'
-            else:
-                meta['color'] = '[COLOR red]%s[/COLOR]'
+        if meta['purchased']:
+            meta['color'] = '[COLOR gold]%s[/COLOR]'
+        elif meta['isPlayable']:
+            meta['color'] = '%s'
+        else:
+            meta['color'] = '[COLOR red]%s[/COLOR]'
 
         if 'isList' in filter and filter['isList'] and info['tracknumber'] is not None:
             # The breadcrumb takes the plain title, without the counts added here.

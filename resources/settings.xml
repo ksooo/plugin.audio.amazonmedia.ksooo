@@ -24,11 +24,6 @@
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="showcolentr" type="boolean" label="30106" help="30122">
-                    <level>0</level>
-                    <default>true</default>
-                    <control type="toggle"/>
-                </setting>
             </group>
             <group id="3">
                 <setting id="logging" type="boolean" label="30104" help="30123">

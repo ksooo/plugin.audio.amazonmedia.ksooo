@@ -166,10 +166,6 @@ msgctxt "#30104"
 msgid "Activate Logging"
 msgstr ""
 
-msgctxt "#30106"
-msgid "Show colored Entries"
-msgstr ""
-
 msgctxt "#30107"
 msgid "Hide unplayable Songs"
 msgstr ""
@@ -185,11 +181,6 @@ msgstr ""
 msgctxt "#30121"
 msgid "Hides songs that Amazon does not stream to your account. When off, they are listed in red."
 msgstr ""
-
-msgctxt "#30122"
-msgid "Marks entries by colour: gold for purchases, red for titles that cannot be played."
-msgstr ""
-
 msgctxt "#30123"
 msgid "Writes details of the sign-in and of every request to Amazon to the Kodi log, for troubleshooting. The sign-in pages are also saved in the add-on's data folder."
 msgstr ""

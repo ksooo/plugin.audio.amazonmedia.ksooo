@@ -40,6 +40,10 @@ class Playability(AddonTest):
     def test_a_title_outside_the_catalogue_is_unplayable_and_red(self):
         self.assertEqual(self.marked(UNAVAILABLE_TRACK, 'PRIME'), (False, RED))
 
+    def test_an_old_setting_that_turned_the_colours_off_is_ignored(self):
+        Kodi.settings['showcolentr'] = 'false'
+        self.assertEqual(self.marked(PURCHASED_TRACK, 'PRIME'), (True, GOLD))
+
     def searched_songs(self):
         Kodi.settings['search1Songs'] = 'jazz'
         invoke('mode=search1Songs')
