@@ -161,6 +161,7 @@ class _ListItem:
         self.label = label
         self.properties = {}
         self.art = {}
+        self.info = {}
 
     def setArt(self, art):
         self.art.update(art)
@@ -239,10 +240,10 @@ infotagger_listitem = types.ModuleType('infotagger.listitem')
 
 class _ListItemInfoTag:
     def __init__(self, listitem, tag_type='music'):
-        pass
+        self.listitem = listitem
 
     def set_info(self, info):
-        pass
+        self.listitem.info = {key: value for key, value in info.items() if value is not None}
 
 
 infotagger_listitem.ListItemInfoTag = _ListItemInfoTag

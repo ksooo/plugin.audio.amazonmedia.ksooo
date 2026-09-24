@@ -41,7 +41,8 @@ class AMitem( AMtools ):
                 'album':        None,
                 'artist':       None,
                 'title':        None,
-                'rating':       None
+                'rating':       None,
+                'mediatype':    None
             }
             meta = {
                 'mode':         None,
@@ -79,6 +80,9 @@ class AMitem( AMtools ):
         elif 'durationSeconds' in item:     info['duration'] = item['durationSeconds']
 
         if 'albumReleaseDate' in item:      info['year'] = item['albumReleaseDate'][:4]
+        elif item.get('originalReleaseDate'):
+            # milliseconds since the epoch
+            info['year'] = datetime.datetime.fromtimestamp(item['originalReleaseDate'] / 1000, datetime.timezone.utc).year
 
         if 'primaryGenre' in item:          info['genre'] = [item['primaryGenre']]
         elif 'genreName' in item:           info['genre'] = [item['genreName']]
@@ -93,11 +97,10 @@ class AMitem( AMtools ):
                 info['album'] = item['album']['title']
 
         if 'isAlbumFolder' in filter and filter['isAlbumFolder'] == True:
-            pass # this is only for folder views ...field 'artist' break Kodi visualization for albums
-        else:
-            if 'albumArtistName' in item:       info['artist'] = item['albumArtistName']
-            if 'artist' in item:                info['artist'] = item['artist']['name']
-            if 'artistName' in item:            info['artist'] = item['artistName']
+            info['mediatype'] = 'album'
+        if 'albumArtistName' in item:       info['artist'] = item['albumArtistName']
+        if 'artist' in item:                info['artist'] = item['artist']['name']
+        if 'artistName' in item:            info['artist'] = item['artistName']
 
         if 'displayName' in item:           info['title'] = item['displayName']
 

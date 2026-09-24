@@ -73,6 +73,20 @@ class Artwork(AddonTest):
         self.assertEqual((art.get('thumb'), art.get('fanart')), (cover, cover))
 
 
+class AlbumInfo(AddonTest):
+    def test_a_listed_album_tells_its_artist_and_year(self):
+        album = {'asin': 'B0ANALBUM1', 'albumName': 'An Album', 'artistName': 'An Artist',
+                 'originalReleaseDate': 1190368800000, 'totalNumberOfTracks': 5, 'isMusicSubscription': True}
+        invoke('mode=getRecomAlbums')
+        self.patch(AMtools, 'load', lambda tools: signed_in(AMaccess()))
+        self.patch(AMcall, 'amzCall', return_value={'recommendations': [
+            {'recommendationType': 'ALBUM', 'albums': [album], 'nextResultsToken': None}]})
+        AmazonMedia().reqDispatch()
+        info = Kodi.items[0][1].info
+        self.assertEqual({key: info.get(key) for key in ('mediatype', 'artist', 'year')},
+                         {'mediatype': 'album', 'artist': 'An Artist', 'year': 2007})
+
+
 class Amazon:
     """Answers the add-on's requests the way the Amazon Music API does."""
 
