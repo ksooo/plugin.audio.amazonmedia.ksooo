@@ -4,13 +4,11 @@ import glob
 import os
 import re
 import unittest
+import xml.etree.ElementTree as ElementTree
 
 from .support import LANGUAGE_FOLDER, LANGUAGES, ROOT, SOURCE_LANGUAGE, TRANSLATIONS
 
 _ENTRY = re.compile(r'^msgctxt "#(\d+)"\nmsgid (".*")\nmsgstr (".*")$', re.M)
-
-# German words that are the same in English.
-SAME_IN_GERMAN = {'"Songs"'}
 
 
 def entries(language):
@@ -63,8 +61,18 @@ class Languages(unittest.TestCase):
 
     def test_nothing_is_left_in_english_in_german(self):
         english = {number: (msgid, msgstr) for number, (msgid, msgstr) in entries('de_de').items()
-                   if msgstr in ('""', msgid) and msgstr not in SAME_IN_GERMAN}
+                   if msgstr in ('""', msgid)}
         self.assertEqual(english, {})
+
+    def test_a_german_setting_says_what_it_does_in_the_infinitive(self):
+        # "Farbige Einträge zeigen" rather than the imperative "Zeige farbige Einträge".
+        settings = ElementTree.parse(os.path.join(ROOT, 'resources', 'settings.xml')).getroot()
+        german = entries('de_de')
+        for setting in settings.iter('setting'):
+            if setting.get('type') in ('bool', 'action'):
+                label = german[int(setting.get('label'))][1].strip('"')
+                with self.subTest(label=label):
+                    self.assertRegex(re.sub(r'\s*\(.*\)$', '', label), r'e[lr]?n$')
 
     def test_a_search_history_label_leaves_room_for_the_search_term(self):
         # The search term is appended to these labels as it is.

@@ -40,7 +40,7 @@ msgstr "Alben suchen"
 
 msgctxt "#30011"
 msgid "Search songs"
-msgstr "Songs suchen"
+msgstr "Titel suchen"
 
 msgctxt "#30012"
 msgid "Purchased"
@@ -48,7 +48,7 @@ msgstr "Gekauft"
 
 msgctxt "#30013"
 msgid "Search playlists"
-msgstr "Playlisten suchen"
+msgstr "Wiedergabelisten suchen"
 
 msgctxt "#30014"
 msgid "Search artists"
@@ -72,11 +72,11 @@ msgstr "Zuletzt hinzugefügt"
 
 msgctxt "#30022"
 msgid "Songs"
-msgstr "Songs"
+msgstr "Titel"
 
 msgctxt "#30023"
 msgid "Playlists"
-msgstr "Playlisten"
+msgstr "Wiedergabelisten"
 
 msgctxt "#30024"
 msgid "Albums"
@@ -168,15 +168,15 @@ msgstr "Applikationslog aktivieren"
 
 msgctxt "#30105"
 msgid "Show all Images (reduce Metadata)"
-msgstr "Zeige alle Bilder (reduziere Metadaten)"
+msgstr "Alle Bilder zeigen (Metadaten reduzieren)"
 
 msgctxt "#30106"
 msgid "Show colored Entries"
-msgstr "Zeige farbige Einträge"
+msgstr "Farbige Einträge zeigen"
 
 msgctxt "#30107"
 msgid "Show unplayable Songs"
-msgstr "Zeige nicht abspielbare Songs"
+msgstr "Nicht abspielbare Titel zeigen"
 
 msgctxt "#30110"
 msgid "Reset Credentials"
