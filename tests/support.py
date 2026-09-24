@@ -62,6 +62,7 @@ class Kodi:
     items = []
     category = None
     typed = ''
+    headings = []
     on_wait_for_abort = None
 
 
@@ -104,7 +105,7 @@ class _Keyboard:
         pass
 
     def setHeading(self, heading):
-        pass
+        Kodi.headings.append(heading)
 
     def setDefault(self, text):
         pass
@@ -298,6 +299,7 @@ class AddonTest(unittest.TestCase):
                        Kodi.directories, Kodi.items):
             del record[:]
         Kodi.typed = ''
+        del Kodi.headings[:]
         Kodi.category = None
         Kodi.on_wait_for_abort = None
         invoke()

@@ -19,7 +19,7 @@ class AMmenu():
 
     @staticmethod
     def menuPlaylists():
-        return [{'txt':30013,'fct':'searchPlayLists',       'img':'search.png'},
+        return [{'txt':30042,'fct':'searchPlayLists',       'img':'search.png'},
                 {'txt':30032,'fct':'search1PlayLists',      'img':'search.png','search':'search1PlayLists'},
                 {'txt':30033,'fct':'search2PlayLists',      'img':'search.png','search':'search2PlayLists'},
                 {'txt':30034,'fct':'search3PlayLists',      'img':'search.png','search':'search3PlayLists'},
@@ -31,7 +31,7 @@ class AMmenu():
 
     @staticmethod
     def menuAlbums():
-        return [{'txt':30010,'fct':'searchAlbums',          'img':'search.png'},
+        return [{'txt':30042,'fct':'searchAlbums',          'img':'search.png'},
                 {'txt':30032,'fct':'search1Albums',         'img':'search.png','search':'search1Albums'},
                 {'txt':30033,'fct':'search2Albums',         'img':'search.png','search':'search2Albums'},
                 {'txt':30034,'fct':'search3Albums',         'img':'search.png','search':'search3Albums'},
@@ -41,7 +41,7 @@ class AMmenu():
 
     @staticmethod
     def menuSongs():
-        return [{'txt':30011,'fct':'searchSongs',           'img':'search.png'},
+        return [{'txt':30042,'fct':'searchSongs',           'img':'search.png'},
                 {'txt':30032,'fct':'search1Songs',          'img':'search.png','search':'search1Songs'},
                 {'txt':30033,'fct':'search2Songs',          'img':'search.png','search':'search2Songs'},
                 {'txt':30034,'fct':'search3Songs',          'img':'search.png','search':'search3Songs'},
@@ -51,7 +51,7 @@ class AMmenu():
 
     @staticmethod
     def menuArtists():
-        return [{'txt':30014,'fct':'searchArtist',          'img':'search.png'},
+        return [{'txt':30042,'fct':'searchArtist',          'img':'search.png'},
                 {'txt':30032,'fct':'search1Artists',        'img':'search.png','search':'search1Artists'},
                 {'txt':30033,'fct':'search2Artists',        'img':'search.png','search':'search2Artists'},
                 {'txt':30034,'fct':'search3Artists',        'img':'search.png','search':'search3Artists'}]

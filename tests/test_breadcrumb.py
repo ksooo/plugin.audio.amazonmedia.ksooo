@@ -47,9 +47,9 @@ class Breadcrumb(AddonTest):
         self.open('')
         self.assertEqual(self.follow('menuPlaylists'), 'Playlists')
         self.answer = {'playlistList': [dict(PLAYLIST)], 'nextTokenMap': {'playlist': None}}
-        self.assertEqual(self.follow('getPopularPlayLists'), 'Playlists / Playlists - Popular')
+        self.assertEqual(self.follow('getPopularPlayLists'), 'Playlists / Popular')
         self.answer = NOTHING
-        self.assertEqual(self.follow('lookup'), 'Playlists / Playlists - Popular / Cool Jazz')
+        self.assertEqual(self.follow('lookup'), 'Playlists / Popular / Cool Jazz')
 
     def test_a_title_with_url_characters_comes_through(self):
         self.open('')
@@ -57,13 +57,13 @@ class Breadcrumb(AddonTest):
         self.answer = {'playlistList': [dict(PLAYLIST, title='Rock & Roll / 50%')], 'nextTokenMap': {'playlist': None}}
         self.follow('getPopularPlayLists')
         self.answer = NOTHING
-        self.assertEqual(self.follow('lookup'), 'Playlists / Playlists - Popular / Rock & Roll / 50%')
+        self.assertEqual(self.follow('lookup'), 'Playlists / Popular / Rock & Roll / 50%')
 
     def test_a_recent_search_shows_what_was_searched_for(self):
         Kodi.settings['search1PlayLists'] = 'jazz'
         self.open('')
         self.follow('menuPlaylists')
-        self.assertEqual(self.follow('search1PlayLists'), 'Playlists / Last Search -1 : jazz')
+        self.assertEqual(self.follow('search1PlayLists'), 'Playlists / Last Search 1: jazz')
 
     def test_the_path_leads_into_a_recommendation(self):
         self.answer = {'blocks': [{'__type': 'Shoveler', 'title': 'Top Playlists', 'blocks': []}]}
@@ -73,9 +73,9 @@ class Breadcrumb(AddonTest):
 
     def test_the_next_page_stays_in_the_folder(self):
         invoke(urlencode({'mode': 'getArtistDetails', 'asin': 'B001RJ93XS',
-                          'crumbs': json.dumps(['Artist - Search', 'Alphaville'])}))
+                          'crumbs': json.dumps(['Artists', 'Search', 'Alphaville'])}))
         next_page = AMitem().setPaginator('next-page-token', None, 'B001RJ93XS')[0]
-        self.assertEqual(self.open(clicked(next_page)), 'Artist - Search / Alphaville')
+        self.assertEqual(self.open(clicked(next_page)), 'Artists / Search / Alphaville')
 
     def test_a_song_carries_no_path(self):
         Kodi.settings['search1Songs'] = 'jazz'
